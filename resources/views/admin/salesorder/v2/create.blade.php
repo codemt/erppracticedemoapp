@@ -28,7 +28,7 @@
             <div class="col-md-12 mb-30">
                 <div class="card">
                     <div class="card-title-w-btn">
-                            <h4 class="title">Sales Order</h4>
+                            <h4 class="title">Sales Order - V2 </h4>
                     </div><hr>
                     <div class="row">
                         <div class="col-md-12">
@@ -959,7 +959,7 @@
                                         <div class="col-md-12">
                                             <div class="inputfile-box" id="product_image_error_div">
                                                
-                                                 <input type="file"  multiple ng-file-model="salesorder.product_image" name="product_image[]"  />
+                                                 <input type="file"  multiple ng-files="product_image($files)" name="product_image[]"  />
                                                  <label for="file"><span class="file-box" id="file-name"></span><span class="file-button">Browse</span></label>
                                                  <span id="product_image_error" class="help-inline text-danger"><?=$errors->first('image')?></span>
                                              </div>
@@ -1008,7 +1008,7 @@
         <div class="text-right">
             <button type="button" name="save_button_view" ng-click="soc.SalesOrderView()" value="save_view" class="btn btn-primary btn-sm disabled-btn" title="View SO">Generate SO & View</button>
             
-            <button type="button" name="save_button_new" ng-click="soc.completeSalesOrder('save_new')" value="save_new" class="btn btn-primary btn-sm disabled-btn" title="Save & Add New user">Save & new </button>
+            <button type="submit" name="save_button_new" ng-click="soc.completeSalesOrder('save_new')" value="save_new" class="btn btn-primary btn-sm disabled-btn" title="Save & Add New user">Save & new </button>
             <button type="button" name="save_button_exit" ng-click="soc.completeSalesOrder('save_exit')" value="save_exit" class="btn btn-primary btn-sm disabled-btn" title="Save and exit">Save & exit</button>
             <input type="hidden" name="save_button" ng-nodel="salesorder.save_button">
             <a href="<?=URL::route('salesorder.index')?>" class="btn btn-default btn-sm" title="Back to user Page">Cancel</a>
@@ -1050,7 +1050,7 @@
         var sales_order = {};
         var sales_order_item = {};
         var role_id = "<?= $user_data['role_id']?>";
-        var url = "<?= URL::route('salesorder.store')?>";
+        var url = "<?= URL::route('salesorder.getproductdata')?>";
         var method = "post";
         var msg = "Record Created successfully";
         var fileurl = "<?= URL::route('file.upload')?>";

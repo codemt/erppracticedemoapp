@@ -1,87 +1,37 @@
 (function () {
     'use strict';
     angular.module('ng-file-model', [])
-	angular.module('funpApp',[])
-	.directive('ngFiles',['$parse',function($parse){
+    .directive("ngFileModel", [function () {
+        return {
+            scope: {
+                ngFileModel: "="
+            },
+            link: function (scope, element, attributes) {
+                element.bind("change", function (changeEvent) {
+                    var reader = new FileReader();
+                    // console.log(reader);
+                    reader.onload = function (loadEvent) {
+                        scope.$apply(function () {
+
+							var image = {};
+							image.last_nameModified = changeEvent.target.files[0].last_nameModified,
+							image.last_nameModifiedDate =  changeEvent.target.files[0].last_nameModifiedDate,
+							image.name = changeEvent.target.files[0].name,
+							image.size = changeEvent.target.files[0].size,
+							image.type =  changeEvent.target.files[0].type,
+							image.data =  loadEvent.target.result
+
+
+							scope.ngFileModel.push(image);
+                        });
+                    }
+					console.log(scope.ngFileModel);
+                    reader.readAsDataURL(changeEvent.target.files[0]);
+                });
+            }
+        }
+    }]);
 	
-	
-			function fn_link(scope,element,attrs){
-	
-	
-	
-	
-					var onChange = $parse(attrs.ngFiles);
-	
-	
-					element.on('change',function(event){
-	
-	
-							onChange(scope,{$files: event.target.files});
-	
-	
-					});
-	
-	
-			}
-			return {
-	
-				link : fn_link
-	
-			}
-	
-	
-	
-	
-	
-	
-	}])
-	
-	.controller('SalesOrderController as soc ',function($scope,$http){
-	
-	
-				var formData = new formData();
-	
-				$scope.product_iamge = function($files){
-	
-						$scope.imagesrc = [];
-	
-	
-						for(var i=0;i<$files.length;i++){
-	
-	
-							var reader = new FileReader();
-							reader.fileName = $files[i].name;
-	
-	
-							reader.onload = function(event){
-	
-	
-									var image = {};
-									image.Name = event.target.fileName;
-									image.Size = (event.total/1024).toFixed(2);
-									image.Src = event.target.result;
-									$scope.imagesrc.push(image);
-									$scope.$apply();
-	
-	
-							}
-	
-	
-	
-						}
-	
-						angular.forEach($files,function(value,key){
-	
-								formData.append(key,value);
-	
-	
-						});
-	
-	
-				}
-	
-	
-	});
     
     angular.module('numbersOnly', [])
     .directive("numbersOnly", [function () {
@@ -148,7 +98,7 @@ salesorderApp.controller('SalesOrderController', function($scope, $rootScope, $h
 	$scope.orderTotalQty = sales_order.total_qty;
 	$scope.orderTaxTotal = sales_order.total_tax_amount;
 	//$scope.getTheFiles = '';
-	$scope.salesorder.product_image = '';
+	$scope.salesorder.product_image = [];
 	$scope.add_select = 0;
 	$scope.sales_order_data = sales_order_data;
 	$scope.order_item_pdf = order_item_pdf;

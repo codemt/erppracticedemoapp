@@ -295,9 +295,9 @@ class SalesOrderController extends Controller
           }
 
        }
-       //dd(print_r($sales_data));
+       dd(print_r($sales_data));
 
-       $salesorder = \Session::put('sales_data',$sales_data);
+       //$salesorder = \Session::put('sales_data',$sales_data);
 
 
         
@@ -326,9 +326,9 @@ class SalesOrderController extends Controller
         
         $product_data = $request->product;
 
-        $final = \Session::put('product_data', $product_data);
+      //  $final = \Session::put('product_data', $product_data);
 
-        $this->combineData($product_data);
+       // $this->combineData($product_data);
 
             dd(print_r($product_data));
 
