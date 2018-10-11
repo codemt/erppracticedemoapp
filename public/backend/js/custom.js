@@ -1,0 +1,1 @@
+$(".number_only").keypress(function(h){if(h.which!=8&&h.which!=0&&(h.which!=46 || $(this).val().indexOf('.') != -1)&&(h.which<48||h.which>57))return!1});$(".qty_only").keypress(function(h){if(h.which!=8&&h.which!=0&&(h.which<48||h.which>57))return!1});

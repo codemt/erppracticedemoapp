@@ -1,0 +1,162 @@
+#top-menu {
+    position: relative;
+    /*padding-right: 70px;
+    min-width: 100px*/
+    top: 35px;
+}
+#top-menu .nav-trigger {
+    position: absolute;
+    top: 2px;
+    right: 0;
+    width: auto
+}
+#top-menu .nav-trigger>.icon-bar {
+    display: inline-block;
+    width: 25px;
+    height: 20px;
+    position: relative;
+    cursor: pointer;
+}
+#top-menu .nav-trigger>.icon-bar>span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: #fff;
+    transition: all .3s ease-in-out;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    border-radius: 2px;
+}
+#top-menu .nav-trigger>.icon-bar>span:first-child {
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+    top: 0
+}
+#top-menu .nav-trigger>.icon-bar>span:nth-child(2) {
+    top: 7px;
+    left: 0
+}
+#top-menu .nav-trigger>.icon-bar>span:last-child {
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+    top: 14px;
+}
+#top-menu .nav-trigger>.text {
+    display: inline-block;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-left: 10px;
+    width: 45px;
+    height: 16px;
+    position: relative
+}
+#top-menu .nav-trigger>.text>span {
+    font-size: .857em;
+    font-weight: 400;
+    letter-spacing: .1em;
+    position: absolute;
+    top: 50%;
+    right: -50%;
+    transition: all .3s ease-in-out
+}
+#top-menu .nav-trigger>.text>span:first-child {
+    right: 50%;
+    -webkit-transform: translate(50%, -50%);
+    transform: translate(50%, -50%)
+}
+#top-menu .nav-trigger>.text>span:last-child {
+    left: -50%;
+    right: inherit;
+    opacity: 0;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%)
+}
+#top-menu .menu-items {
+    margin: 0;
+    padding: 0;
+    display: none
+}
+#top-menu.login_menu {float: left;}
+#top-menu.login_menu .menu-items {display: block;}
+#top-menu .menu-items>li {
+    display: inline-block;
+    opacity: 0;
+    position: relative;
+    top: -5px;
+    transition: top .3s ease .1s, opacity .3s ease .1s
+}
+#top-menu.login_menu .menu-items>li {opacity: 1; top: 0;}
+#top-menu .menu-items>li:nth-child(2n) {
+    transition: top .3s ease .2s, opacity .3s ease .2s
+}
+#top-menu .menu-items>li:nth-child(3n) {
+    transition: top .3s ease .3s, opacity .3s ease .3s
+}
+#top-menu .menu-items>li:nth-child(4n) {
+    transition: top .3s ease .4s, opacity .3s ease .4s
+}
+#top-menu .menu-items>li:nth-child(5n) {
+    transition: top .3s ease .5s, opacity .3s ease .5s
+}
+#top-menu .menu-items>li:nth-child(6n) {
+    transition: top .3s ease .6s, opacity .3s ease .6s
+}
+#top-menu .menu-items>li:nth-child(7n) {
+    transition: top .3s ease .7s, opacity .3s ease .7s
+}
+#top-menu .menu-items>li:nth-child(8n) {
+    transition: top .3s ease .8s, opacity .3s ease .8s
+}
+#top-menu .menu-items>li:nth-child(9n) {
+    transition: top .3s ease .9s, opacity .3s ease .9s
+}
+#top-menu .menu-items>li:nth-child(10n) {
+    transition: top .3s ease 1s, opacity .3s ease 1s
+}
+#top-menu .menu-items>li:last-child>a {
+    margin-right: 0
+}
+#top-menu.active .nav-trigger>.icon-bar {
+    position: relative
+}
+#top-menu.active .nav-trigger>.icon-bar>span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    bottom: inherit
+}
+#top-menu.active .nav-trigger>.icon-bar>span:nth-child(2) {
+    opacity: 0;
+    display: none
+}
+#top-menu.active .nav-trigger>.icon-bar>span:first-child {
+    -webkit-transform: translate(-50%, -50%) rotate(45deg);
+    transform: translate(-50%, -50%) rotate(45deg)
+}
+#top-menu.active .nav-trigger>.icon-bar>span:last-child {
+    -webkit-transform: translate(-50%, -50%) rotate(-45deg);
+    transform: translate(-50%, -50%) rotate(-45deg)
+}
+#top-menu.active .nav-trigger>.text>span:first-child {
+    right: 0;
+    opacity: 0
+}
+#top-menu.active .nav-trigger>.text>span:last-child {
+    top: 50%;
+    left: 50%;
+    right: inherit;
+    opacity: 1
+}
+#top-menu .menu-items {
+    display: block;
+    float: right;
+    /*margin-right: 51px;*/
+}
+#top-menu.active .menu-items.active>li {
+    opacity: 1;
+    top: 0
+}
+
+#top-menu .menu-items>li {opacity: 1;}
+#top-menu .nav-trigger {display: none;}

@@ -1,0 +1,909 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,900");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,900");
+.white-bg {
+  background: #fff;
+  float: left; }
+
+.sf-step .red-bg {
+  background-color: #f15959; }
+
+.mb-0 {
+  margin-bottom: 0 !important; }
+
+.pb-0 {
+  padding-bottom: 0 !important; }
+
+body.login_bg {
+  background: url(../images/slider-banner3.jpg) no-repeat;
+  background-size: cover;
+  min-height: 97vh;
+}
+
+/** Header Section **/
+/*header {
+  background: rgba(255, 255, 255, 0.14); }
+  header .container {
+    display: table;
+    height: 101px; }
+    @media (max-width: 767px) {
+      header .container {
+        width: 100%;
+        padding: 15px;
+        height: auto; } }
+  header .logo {
+    padding: 0; }
+    @media (max-width: 1199px) {
+      header .logo {
+        width: 21%; } }
+    @media (max-width: 991px) {
+      header .logo {
+        width: 29%; } }
+    @media (max-width: 767px) {
+      header .logo {
+        width: 24%;
+        padding-right: 15px; } }
+    @media (max-width: 640px) {
+      header .logo {
+        display: table-cell;
+        vertical-align: middle;
+        float: none; } }
+    @media (max-width: 640px) {
+      header .logo {
+        padding-right: 6px; } }
+    header .logo img {
+      padding: 10px 0;
+      max-width: 100%; }
+      @media (max-width: 767px) {
+        header .logo img {
+          padding: 13px 0; } }
+      @media (max-width: 640px) {
+        header .logo img {
+          padding: 0; } }
+    header .logo:after {
+      content: '';
+      width: 1px;
+      height: 25px;
+      color: #fff;
+      position: absolute;
+      display: block;
+      background: #fff;
+      top: 14px;
+      right: 0; }
+      @media (max-width: 640px) {
+        header .logo:after {
+          top: 5px; } }
+      @media (max-width: 640px) {
+        header .logo:after {
+          height: 18px;
+          top: 9px; } }
+      @media (max-width: 480px) {
+        header .logo:after {
+          right: -8px; } }
+  header .nav_header {
+    display: table-cell;
+    vertical-align: middle; }
+    @media (max-width: 640px) {
+      header .nav_header {
+        display: table;
+        width: 100%;
+        margin: 0 auto;
+        height: 35px; } }
+  @media (max-width: 640px) {
+    header .navigation {
+      display: table-cell;
+      vertical-align: middle;
+      float: none; } }
+  header .navigation .navbar {
+    margin-bottom: 0 !important; }
+    @media (max-width: 767px) {
+      header .navigation .navbar {
+        min-height: auto; } }
+    @media (max-width: 640px) {
+      header .navigation .navbar .nav {
+        margin: 0; } }
+    header .navigation .navbar .nav li a {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 300;
+      font-family: "Montserrat", sans-serif;
+      float: left; }
+      @media (max-width: 767px) {
+        header .navigation .navbar .nav li a {
+          padding: 8px 15px;
+          font-size: 16px; } }
+      @media (max-width: 640px) {
+        header .navigation .navbar .nav li a {
+          padding: 0 12px;
+          font-size: 15px; } }
+      @media (max-width: 480px) {
+        header .navigation .navbar .nav li a {
+          padding: 0 8px;
+          font-size: 14px; } }
+      @media (max-width: 360px) {
+        header .navigation .navbar .nav li a {
+          padding: 0 6px;
+          font-size: 13px; } }
+      header .navigation .navbar .nav li a:hover {
+        background-color: transparent;
+        color: #2eb7f3; }*/
+
+/** Header Section End **/
+/** Footer Section Start **/
+footer {
+  background-color: #0296d6;
+  padding: 17px 15px; }
+  footer p {
+    margin-bottom: 0px;
+    color: #fff;
+    font-family: "Raleway", sans-serif;
+    font-size: 14px;
+    font-weight: normal; }
+    footer p.copy_right {
+      font-size: 12px;
+      font-weight: lighter; }
+
+/** Footer Section End **/
+/** Login page **/
+.login {
+  padding: 80px 24px; }
+  @media (max-width: 767px) {
+    .login {
+      padding: 50px 25px; } }
+  @media (max-width: 420px) {
+    .login {
+      padding: 40px 15px; } }
+  .login .login_page .member_login, .registration .register_page {
+    float: none;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+    }
+    .login .login_page .member_login:before, .registration .register_page:before {
+        content: "";
+        position: absolute;
+        left: 15px;
+        top: 0;
+        width: 41.66666667%;
+        height: 100%;
+        background: #0f657e;
+    }
+    @media (max-width: 767px) {
+        .login .login_page .member_login:before, 
+        .registration .register_page:before {width: 100%; left: 0;}
+    }
+    @media (max-width: 767px) {
+      .login .login_page .member_login {
+        width: 70%; padding: 0;} }
+    @media (max-width: 640px) {
+      .login .login_page .member_login {
+        width: 80%; } }
+    @media (max-width: 480px) {
+      .login .login_page .member_login {
+        width: 90%; } }
+    @media (max-width: 420px) {
+      .login .login_page .member_login {
+        width: 100%; } }
+    .login .login_page .member_login .member_deatil {
+      float: left;
+      padding-top: 30px;
+      /*.member_img{
+        @include vertical-middle;
+      }*/ }
+      .login .login_page .member_login .member_deatil h3 {
+        font-size: 22px;
+        font-family: "Raleway", sans-serif;
+        text-align: center;
+        color: #fff;
+        margin: 30px 0 25px;
+        }
+        @media (max-width: 1199px) {
+          .login .login_page .member_login .member_deatil, .registration .register_page .left-bg {padding-top: 20px !important;}
+            .login .login_page .member_login .member_deatil h3 {margin: 25px 0 20px;}
+        }
+        @media (max-width: 991px) {
+          .login .login_page .member_login .member_deatil, .registration .register_page .left-bg {padding-top: 10px !important;}
+          .login .login_page .member_login .member_deatil h3 {
+            font-size: 18px;
+            margin-bottom: 16px; } }
+      .login .login_page .member_login .member_deatil p {
+        text-align: center;
+        color: #fff;
+        font-size: 14px;
+        padding: 20px 35px;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 300;
+        line-height: 1.4;
+        margin: 0;
+        }
+        @media (max-width: 991px) {
+          .login .login_page .member_login .member_deatil p {
+            font-size: 13px;
+            padding: 13px 26px; 
+            margin-bottom: 10px;} }
+        @media (max-width: 420px) {
+          .login .login_page .member_login .member_deatil p {
+            font-size: 12px;
+            padding: 11px 24px; } }
+    .login .login_page .member_login .member_form {
+      float: left;
+      padding: 8% 4%; }
+      @media (max-width: 991px) {
+        .login .login_page .member_login .member_form {
+          padding: 7.5% 5%; } }
+      @media (max-width: 767px) {
+        .login .login_page .member_login .member_form {
+          padding: 7% 10%; } }
+      @media (max-width: 640px) {
+        .login .login_page .member_login .member_form {
+          padding: 5% 8%; } }
+      @media (max-width: 420px) {
+        .login .login_page .member_login .member_form {
+          padding: 7%; } }
+      .login .login_page .member_login .member_form .field-form .form-group {
+        margin-bottom: 8px; }
+        @media (max-width: 420px) {
+          .login .login_page .member_login .member_form .field-form .form-group {
+            margin-bottom: 3px; } }
+        @media (max-width: 360px) {
+          .login .login_page .member_login .member_form .field-form .form-group {
+            margin-bottom: 0; } }
+        .login .login_page .member_login .member_form .field-form .form-group .icon {
+          /*width: 12%;*/
+          padding-top: 10px; }
+          @media (max-width: 991px) {
+            .login .login_page .member_login .member_form .field-form .form-group .icon img {
+              width: 20px; } }
+          @media (max-width: 420px) {
+            .login .login_page .member_login .member_form .field-form .form-group .icon img {
+              width: 18px; } }
+          @media (max-width: 360px) {
+            .login .login_page .member_login .member_form .field-form .form-group .icon img {
+              width: 16px; } }
+        .login .login_page .member_login .member_form .field-form .form-group .field {
+          width: 92%; }
+          .login .login_page .member_login .member_form .field-form .form-group .field .form-control,
+          .login .registration .register_page .field-form .form-group .field .form-control {
+            /*height: 35px;*/
+            font-size: 14px;    
+            font-family: "Montserrat", sans-serif;
+            font-weight: 100;
+            }
+            @media (max-width: 991px) {
+              .login .login_page .member_login .member_form .field-form .form-group .field .form-control {
+                height: 33px;
+                font-size: 12px;
+                background-size: 10px !important; } }
+            @media (max-width: 420px) {
+              .login .login_page .member_login .member_form .field-form .form-group .field .form-control {
+                height: 30px;
+                font-size: 11px;
+                background-size: 8px !important; } }
+        .login .login_page .member_login .member_form .field-form .form-group label {
+          font-family: "Raleway", sans-serif;
+          font-size: 13px; }
+          @media (max-width: 991px) {
+            .login .login_page .member_login .member_form .field-form .form-group label {
+              font-size: 12px; } }
+          @media (max-width: 420px) {
+            .login .login_page .member_login .member_form .field-form .form-group label {
+              font-size: 10px; } }
+          .login .login_page .member_login .member_form .field-form .form-group label:after {
+            background-color: #0296d6; }
+        .login .login_page .member_login .member_form .field-form .form-group.focused label {
+          color: #0296d6; }
+          @media (max-width: 991px) {
+            .login .login_page .member_login .member_form .field-form .form-group.focused label {
+              font-size: 10px !important; } }
+          @media (max-width: 420px) {
+            .login .login_page .member_login .member_form .field-form .form-group.focused label {
+              font-size: 8px !important; } }
+      .login .login_page .member_login .member_form .field-form .btns {
+        float: left;
+        width: 100%;
+        padding: 18px 0 0 0;
+        float: right;
+        width: 92%; }
+      .login .login_page .member_login .member_form .submit_form {
+        float: right;
+        margin-top: 17px; }
+        @media (max-width: 420px) {
+          .login .login_page .member_login .member_form .submit_form {
+            margin-top: 15px; } }
+        .login .login_page .member_login .member_form .submit_form .login_btn {
+          background: #eb6f6f;
+          border: #eb6f6f;
+          margin: 0 auto;
+          display: block;
+          margin-top: 30px;
+          margin-bottom: 30px;
+          font-family: "Raleway", sans-serif;
+          padding: 0px 20px;
+          font-weight: 600;
+          font-size: 14px;
+          line-height: 2.5;
+          margin: 0;
+          font-family: "Raleway", sans-serif;
+          font-size: 12px;
+          padding: 9px 45px;
+          font-weight: 500;
+          line-height: inherit; }
+          .login .login_page .member_login .member_form .submit_form .login_btn .login_btn_img {
+            padding-left: 5px; }
+          @media (max-width: 991px) {
+            .login .login_page .member_login .member_form .submit_form .login_btn {
+              font-size: 11px;
+              padding: 7.5px 38px; } }
+          @media (max-width: 420px) {
+            .login .login_page .member_login .member_form .submit_form .login_btn {
+              font-size: 10px;
+              padding: 7px 30px; } }
+          .login .login_page .member_login .member_form .submit_form .login_btn:hover {
+            background: #0f657e; }
+      .login .login_page .member_login .member_form .registration_now {
+        float: left; }
+        .login .login_page .member_login .member_form .registration_now .register_btn {
+          background: transparent;
+          color: #000;
+          border: 1px solid #ababab;
+          font-family: "Raleway", sans-serif;
+          font-size: 12px;
+          padding: 8px 20px;
+          font-weight: 500; }
+          @media (max-width: 991px) {
+            .login .login_page .member_login .member_form .registration_now .register_btn {
+              font-size: 11px;
+              padding: 7px 18px; } }
+          @media (max-width: 420px) {
+            .login .login_page .member_login .member_form .registration_now .register_btn {
+              font-size: 10px;
+              padding: 7px 15px; } }
+        .login .login_page .member_login .member_form .registration_now p {
+          font-size: 12px;
+          color: #858585;
+          font-family: "Raleway", sans-serif;
+          line-height: 1;
+          margin: 0 0 5px 0; }
+          @media (max-width: 991px) {
+            .login .login_page .member_login .member_form .registration_now p {
+              font-size: 11px; } }
+          @media (max-width: 420px) {
+            .login .login_page .member_login .member_form .registration_now p {
+              font-size: 9px; } }
+      .login .login_page .member_login .member_form .forgot_pwd {
+        text-align: center;
+        display: block;
+        color: #858585;
+        font-family: "Raleway", sans-serif;
+        width: 100%;
+        float: left;
+        margin-top: 45px; }
+        @media (max-width: 420px) {
+          .login .login_page .member_login .member_form .forgot_pwd {
+            margin-top: 35px; } }
+        .login .login_page .member_login .member_form .forgot_pwd a {
+          font-size: 13px;
+          text-transform: uppercase;
+          text-decoration: none;
+        }
+        .login .login_page .member_login .member_form .forgot_pwd a:hover {color: #666a6b;}
+          @media (max-width: 991px) {
+            .login .login_page .member_login .member_form .forgot_pwd a {
+              font-size: 12px; } }
+          @media (max-width: 420px) {
+            .login .login_page .member_login .member_form .forgot_pwd a {
+              font-size: 10px; } }
+      .login .login_page .member_login .member_form .login_btn {
+        background: #eb6f6f;
+        border: #eb6f6f;
+        margin: 0 auto;
+        display: block;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        font-family: "Raleway", sans-serif;
+        padding: 0px 20px;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 2.5; }
+        .login .login_page .member_login .member_form .login_btn .login_btn_img {
+          padding-left: 5px; }
+      .login .login_page .member_login .member_form .login_form {
+        width: 80%;
+        margin: 0 auto;
+        overflow: hidden; }
+        .login .login_page .member_login .member_form .login_form .form-group {
+          margin: 0 auto;
+          margin-top: 15px;
+          padding-right: 0px;
+          padding-left: 45px; }
+          .login .login_page .member_login .member_form .login_form .form-group.focused .control-label {
+            top: 0px;
+            right: 0px;
+            left: 45px;
+            color: #0296d6;
+            font-size: 11px !important; }
+          .login .login_page .member_login .member_form .login_form .form-group .form-control {
+            height: 30px;
+            border-bottom-color: #858585;
+            font-size: 14px !important; }
+            @media (max-width: 991px) {
+              .login .login_page .member_login .member_form .login_form .form-group .form-control {
+                font-size: 12px; } }
+            @media (max-width: 420px) {
+              .login .login_page .member_login .member_form .login_form .form-group .form-control {
+                font-size: 10px; } }
+          .login .login_page .member_login .member_form .login_form .form-group .control-label {
+            /* Chrome/Opera/Safari */
+            color: #858585;
+            font-size: 12px;
+            font-family: "Raleway", sans-serif;
+            opacity: 1;
+            font-weight: 500;
+            left: 45px; }
+      .login .login_page .member_login .member_form .register_now {
+        font-size: 16px;
+        font-family: "Raleway", sans-serif;
+        text-transform: uppercase;
+        display: block;
+        text-align: center;
+        padding-top: 40px;
+        font-weight: 500;
+        padding-bottom: 30px; }
+
+/**  Login End **/
+/** Sign up start **/
+  @media (max-width: 767px) {
+    .registration .register_page {
+      width: 70%; padding: 0;} }
+  @media (max-width: 640px) {
+    .registration .register_page {
+      width: 80%; } }
+  @media (max-width: 480px) {
+    .registration .register_page {
+      width: 90%; } }
+  @media (max-width: 420px) {
+    .registration .register_page {
+      width: 100%; } }
+  .registration .register_page .left-bg {
+    background: #0f657e;
+    padding-top: 30px; }
+    /*@media (max-width: 991px) {
+      .registration .register_page .left-bg {
+        padding: 25px; } }*/
+    @media (max-width: 767px) {
+      .registration .register_page .left-bg {
+        height: auto !important; } }
+    .registration .register_page .left-bg h3 {
+      font-size: 22px;
+      font-family: "Raleway", sans-serif;
+      text-align: center;
+      color: #fff;
+      margin: 30px 0 25px; }
+      @media (max-width: 1199px) {
+        .registration .register_page .left-bg h3 {margin: 20px 0 25px;}
+      }
+      @media (max-width: 991px) {
+        .registration .register_page .left-bg h3 {
+          font-size: 18px;
+          margin-bottom: 16px; } }
+    .registration .register_page .left-bg p {
+      font-size: 14px;
+      padding: 20px 35px;
+      font-family: "Montserrat", sans-serif;
+      font-weight: 300;
+      line-height: 1.4; }
+      .registration .register_page .left-bg .login_btn {
+        padding: 9px 45px;
+        font-size: 13px;
+        background: #ff7f4f;
+        border-color: #ff7f4f;
+        margin-top: 30px;
+      }
+      .registration .register_page .left-bg .login_btn:hover{
+        background: #ffc61b;
+        border-color: #ffc61b;
+      }
+      @media (max-width: 991px) {
+        .registration .register_page .left-bg p {
+          font-size: 13px;
+          padding: 13px 26px; } 
+          .registration .register_page .left-bg .login_btn {margin-bottom: 30px;}
+        }
+      @media (max-width: 420px) {
+        .registration .register_page .left-bg p {
+          font-size: 12px;
+          padding: 11px 24px; } }
+  .registration .register_page .white-bg {
+    padding: 5% 6%; }
+    @media (max-width: 991px) {
+      .registration .register_page .white-bg {
+        padding: 3% 5%; } }
+    @media (max-width: 767px) {
+      .registration .register_page .white-bg {
+        padding: 7% 10%;
+        height: auto !important; } }
+    @media (max-width: 640px) {
+      .registration .register_page .white-bg {
+        padding: 7% 6%; } }
+    /*@media (max-width: 420px) {
+      .registration .register_page .white-bg {
+        padding: 7%; } }*/
+    .registration .register_page .white-bg .field-form .form-group {
+      margin-bottom: 8px; }
+      @media (max-width: 420px) {
+        .registration .register_page .white-bg .field-form .form-group {
+          margin-bottom: 3px; } }
+      @media (max-width: 360px) {
+        .registration .register_page .white-bg .field-form .form-group {
+          margin-bottom: 0; } }
+      .registration .register_page .white-bg .field-form .form-group .icon {
+        /*width: 12%;*/
+        padding-top: 10px; }
+        @media (max-width: 991px) {
+          .registration .register_page .white-bg .field-form .form-group .icon img {
+            width: 20px; } }
+        @media (max-width: 420px) {
+          .registration .register_page .white-bg .field-form .form-group .icon img {
+            width: 18px; } }
+        @media (max-width: 360px) {
+          .registration .register_page .white-bg .field-form .form-group .icon img {
+            width: 16px; } }
+      .registration .register_page .white-bg .field-form .form-group .field {
+        width: 88%; }
+        .registration .register_page .white-bg .field-form .form-group .field .select {
+          height: 37px;
+          font-size: 14px;
+          background-position: 100% 70% !important; }
+          .registration .register_page .white-bg .field-form .form-group .field .select .select-styled {
+            font-size: 13px;
+            color: #858585;
+            text-transform: capitalize;
+            font-family: "Raleway", sans-serif;
+          }
+          .registration .register_page .white-bg .field-form .form-group .field .select .select-styled:after {right: 0;}
+          .registration .register_page .white-bg .field-form .form-group .field .select .select-options {height: 185px;}
+          .registration .register_page .white-bg .pwd.phone .form-group .field .select .select-options li:first-child {
+            text-indent: 2px;
+          }
+          .registration .register_page .white-bg .field-form .form-group .field .select .parsley-errors-list + .select-styled {
+            border-bottom: 1px solid #B94A48;
+          }
+          .registration .register_page .white-bg .field-form .form-group .field .select .parsley-success + .select-styled {
+            /*border-bottom: 1px solid #B94A48;*/
+          }
+          /*.registration .register_page .white-bg .field-form .form-group .field .select .parsley-errors-list {bottom: -30px;}*/
+          @media (max-width: 1199px) {
+            .registration .register_page .white-bg .field-form .form-group .field .select .select-styled:after {border-width: 5px;}
+          }
+          @media (max-width: 991px) {
+            .registration .register_page .white-bg .field-form .form-group .field .form-control {
+              height: 33px;
+              font-size: 12px;
+              background-size: 10px !important; }
+            .registration .register_page .white-bg .field-form .form-group .field .select .select-options {height: 150px;}
+          }
+          @media (max-width: 420px) {
+            .registration .register_page .white-bg .field-form .form-group .field .form-control {
+              height: 30px;
+              font-size: 11px;
+              background-size: 8px !important; }
+            .registration .register_page .white-bg .field-form .form-group .field .select .select-options {height: 135px;}
+            .registration .register_page .white-bg .field-form .form-group .field .select .select-styled:after {border-width: 4px; bottom: 8px;}
+          }
+      .registration .register_page .white-bg .field-form .form-group label {
+        font-family: "Raleway", sans-serif;
+        font-size: 13px; }
+        @media (max-width: 991px) {
+          .registration .register_page .white-bg .field-form .form-group label, 
+          .registration .register_page .white-bg .field-form .form-group .field .select .select-styled {
+            font-size: 12px; } }
+        @media (max-width: 420px) {
+          .registration .register_page .white-bg .field-form .form-group label {
+            font-size: 10px; } }
+        .registration .register_page .white-bg .field-form .form-group label:after {
+          background-color: #0296d6; }
+      .registration .register_page .white-bg .field-form .form-group.focused label {
+        color: #0296d6; }
+        @media (max-width: 991px) {
+          .registration .register_page .white-bg .field-form .form-group.focused label {
+            font-size: 10px !important; } }
+        @media (max-width: 420px) {
+          .registration .register_page .white-bg .field-form .form-group.focused label {
+            font-size: 8px !important;} }
+    .registration .register_page .white-bg .field-form .feild select {
+      background: #cacaca; }
+    .registration .register_page .white-bg .pwd {
+      float: left;
+      width: 100%; }
+      /*.registration .register_page .white-bg .pwd .icon {
+        width: 12%; }*/
+        @media (max-width: 991px) {
+          .registration .register_page .white-bg .pwd .icon img {
+            width: 20px; } }
+        @media (max-width: 420px) {
+          .registration .register_page .white-bg .pwd .icon img {
+            width: 18px; } }
+        @media (max-width: 360px) {
+          .registration .register_page .white-bg .pwd .icon img {
+            width: 16px; } }
+      .registration .register_page .white-bg .pwd .row {
+        float: left;
+        width: 88%;
+        margin-left: 0; }
+        .registration .register_page .white-bg .pwd .row .form-group {
+          width: 48% !important;
+          margin-right: 4%; }
+          .registration .register_page .white-bg .pwd .row .form-group:last-child {
+            margin-right: 0; }
+            .registration .register_page .white-bg .pwd .icon {padding-top: 10px;}
+          .registration .register_page .white-bg .pwd .row .form-group .field {
+            width: 100%; }
+      .registration .register_page .white-bg .pwd.phone .row .form-group:first-child {
+        width: 20% !important; }
+      .registration .register_page .white-bg .pwd.phone .row .form-group:last-child {
+        width: 76% !important; }
+    .registration .register_page .white-bg .submit_form {
+      float: left;
+      width: 100%;
+      text-align: center;
+      margin: 20px 0 10px 0; }
+      .registration .register_page .white-bg .submit_form .btn {
+        background: #eb6f6f;
+        border: #eb6f6f;
+        margin: 0 auto;
+        display: block;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        font-family: "Raleway", sans-serif;
+        padding: 0px 20px;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 2.5;
+        margin: 0 auto;
+        font-family: "Raleway", sans-serif;
+        font-size: 12px;
+        padding: 9px 45px;
+        font-weight: 500;
+        line-height: inherit; }
+        .registration .register_page .white-bg .submit_form .btn .login_btn_img {
+          padding-left: 5px; }
+        @media (max-width: 991px) {
+          .registration .register_page .white-bg .submit_form .btn, .registration .register_page .left-bg .login_btn {
+            font-size: 11px;
+            padding: 7.5px 38px; } }
+        .registration .register_page .white-bg .submit_form .btn:hover {
+          background: #0f657e; }
+          @media (max-width: 480px) {
+            .registration .register_page .white-bg .pwd.phone .row .form-group:first-child {
+            width: 23% !important; }
+          .registration .register_page .white-bg .pwd.phone .row .form-group:last-child {
+            width: 73% !important; }
+          }
+
+/** Sign up End **/
+.competition label.control-label {
+  width: 100%;
+  float: left; }
+/*.competition .form-control {
+  width: 47% !important;
+  float: left; }
+  .competition .form-control:nth-child(odd) {
+    margin-right: 0; }*/
+  .competition .form-control:nth-child(even) {
+    margin-right: 30px; }
+.competition .icon {
+  padding-top: 0px !important; }
+
+.attributes label.control-label {
+  width: 100%;
+  float: left; }
+.attributes .icon {
+  padding-top: 0px !important; }
+
+/**radio button css start ***/
+.control-group {
+  display: inline-block;
+  vertical-align: top;
+  background: #fff;
+  text-align: left;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 200px;
+  height: 210px;
+  margin: 10px; }
+
+.control {
+  display: block;
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 15px;
+  cursor: pointer; }
+
+.control input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0; }
+
+.control__indicator {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background: #ffffff;
+  border: 2px solid #1bacea; }
+
+.control--radio .control__indicator {
+  border-radius: 50%; }
+
+.control:hover input ~ .control__indicator,
+.control input:focus ~ .control__indicator {
+  background: #fff; }
+
+.control input:checked ~ .control__indicator {
+  background: #2aa1c0; }
+
+.control:hover input:not([disabled]):checked ~ .control__indicator,
+.control input:checked:focus ~ .control__indicator {
+  background: #fff; }
+
+.control input:disabled ~ .control__indicator {
+  background: #e6e6e6;
+  opacity: 0.6;
+  pointer-events: none; }
+
+.control__indicator:after {
+  content: '';
+  position: absolute;
+  display: none; }
+
+.control input:checked ~ .control__indicator:after {
+  display: block; }
+
+.control--checkbox .control__indicator:after {
+  left: 8px;
+  top: 4px;
+  width: 3px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg); }
+
+.control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #7b7b7b; }
+
+.control--radio .control__indicator:after {
+  left: 1px;
+  top: 1px;
+  height: 14px;
+  width: 14px;
+  border-radius: 50%;
+  background: #1bacea;
+  border: 2px solid #fff; }
+
+.control--radio input:disabled ~ .control__indicator:after {
+  background: #7b7b7b; }
+
+p.add_more {
+  float: left;
+  margin-top: 25px;
+  width: 100%; }
+  p.add_more a {
+    background: #526271;
+    color: #fff;
+    padding: 5px 10px;
+    float: left; }
+    p.add_more a:hover {
+      text-decoration: none; }
+
+/**radio button css end ***/
+
+/** Custom Select **/
+.custom-select-wrapper {
+  user-select: none;
+}
+  .custom-select-wrapper select {
+    display: none;
+  }
+
+    .custom-select-trigger {
+      position: relative;
+      display: block;
+      width: 100%;
+      /* border-radius: 4px; */
+      cursor: pointer;
+      height: 39px;
+      text-transform: uppercase;
+      padding: 9px 0px;
+      border-bottom: 1px solid #c2c2c2;
+    }
+    .opened .custom-select-trigger{
+        border-bottom: 0;
+    }
+      .custom-select-trigger:after {
+        position: absolute;
+        display: block;
+        content: '';
+        width: 10px; height: 10px;
+        top: 50%; right: 0;
+        margin-top: -3px;
+        border-bottom: 1px solid #7f7f7f;
+        border-right: 1px solid #7f7f7f;
+        transform: rotate(45deg) translateY(-50%);
+        transition: all .4s ease-in-out;
+        transform-origin: 50% 0;
+      }
+      .custom-select.opened .custom-select-trigger:after {
+        margin-top: 3px;
+        transform: rotate(-135deg) translateY(-50%);
+      }
+  .custom-options {
+    position: absolute;
+    display: block;
+    top: 100%;
+    left: 0;
+    right: 0;
+    min-width: 100%;
+    margin: 10px 0;
+    border: 1px solid #dadada;
+    /* border-radius: 4px; */
+    box-sizing: border-box;
+    box-shadow: 0 2px 1px rgba(0,0,0,.07);
+    background: #fff;
+    transition: all .4s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-15px);
+    z-index: 999;
+  }
+  .custom-select.opened .custom-options {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+    transform: translateY(0);
+  }
+    .custom-options:before {
+      position: absolute;
+      display: block;
+      content: '';
+      bottom: 100%;
+      right: 7px;
+      width: 11px;
+      height: 11px;
+      margin-bottom: -4px;
+      border-top: 1px solid #b5b5b5;
+      border-left: 1px solid #b5b5b5;
+      background: #fff;
+      transform: rotate(45deg);
+      transition: all .4s ease-in-out;
+      top: -7px;
+    }
+    .option-hover:before {
+      background: #f9f9f9;
+    }
+    .custom-option {
+      position: relative;
+      display: block;
+      padding: 8px 11px;
+      border-bottom: 1px solid #dadada;
+      font-size: 16px;
+      /* font-weight: 600; */
+      color: #757575;
+      /* line-height: 41px; */
+      cursor: pointer;
+      transition: all .4s ease-in-out;
+    }
+    .custom-option:first-of-type {
+      /* border-radius: 4px 4px 0 0; */
+    }
+    .custom-option:last-of-type {
+      border-bottom: 0;
+      border-radius: 0 0 4px 4px;
+    }
+    .custom-option:hover,
+    .custom-option.selection {
+      background: #c0c0c0;
+      color: #0f2b40;
+    }
+
+/*# sourceMappingURL=login.css.map */
