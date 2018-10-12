@@ -89,6 +89,7 @@ Route::group(array('middleware' => ['admin_guest']), function () {
 
 		// Sales Order AJAX - Get Products Cart Data.
 		Route::post('admin/salesorder/cartdata', 'Admin\SalesOrderController@getProductData')->name('salesorder.getproductdata');
+		Route::get('admin/salesorder', 'Admin\SalesOrderController@getProductData')->name('salesorder.index');
 
 		//product master
 		Route::get('admin/product/export','Admin\ProductMasterController@export')->name('product.export');

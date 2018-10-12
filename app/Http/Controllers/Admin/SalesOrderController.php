@@ -279,71 +279,26 @@ class SalesOrderController extends Controller
                        
     	return view('admin.salesorder.create',compact('companies','states','cities','billing_address','product_data','sono','user_data','supplier_data','customers','countries'));
     }
-    public function store(Request $request){
+    public function store(SalesOrderRequest $request){
 
       
        
        $sales_data = $request->all();
-       if($request->hasfile('product_image'))
-       {
 
-          foreach($request->file('product_image') as $file)
-          {
-              $name=$file->getClientOriginalName();
-             // $file->move(public_path().'/files/', $name);  
-              $data[] = $name;  
-          }
-
-       }
-       dd(print_r($sales_data));
-
-       //$salesorder = \Session::put('sales_data',$sales_data);
+       $sales_data['user'] = auth()->guard('admin')->user();
 
 
+       $this->createsalesorder($sales_data);
         
-
-    //   return $data;
-      
-     //  $this->combineData($sales_data);
-       //return $sales_data;
-      //   dd($sales_data);
-      //  $sales_data['user'] = auth()->guard('admin')->user();
-       
-          //  $this->createsalesorder($sales_data);
-        /*
-        Event::fire(new SalesOrderCreateEvent($sales_data));ss
-       if ($request->save_button == 'save_new') {
-            return response()->json(['success'=>true,'redirect'=>'back']);
-        }
-        return response()->json(['success'=>true,'redirect'=>route('salesorder.index')]);
-        */
+    //    Event::fire(new SalesOrderCreateEvent($sales_data)); 
+    //    if ($request->save_button == 'save_new') {
+    //        return response()->json(['success'=>true,'redirect'=>'back']);
+    //    }
+    //    return response()->json(['success'=>true,'redirect'=>route('salesorder.index')]);
         
 
     }
-    public function getProductData(Request $request){
 
-
-        
-        $product_data = $request->product;
-
-      //  $final = \Session::put('product_data', $product_data);
-
-       // $this->combineData($product_data);
-
-            dd(print_r($product_data));
-
-        
-
-
-    }
-
-    public function combineData($salesorder,$products){
-
-
-            return 123;
-
-
-    }
     
     public function edit($id){
         $sales_order = SalesOrder::find($id); 
@@ -1437,34 +1392,48 @@ class SalesOrderController extends Controller
         $imagePath = public_path("upload/salesorder");
 
     
+        foreach($salesorder_data['product_image'] as $salesorder_data['product_image']){
 
-        if (isset($salesorder_data['product_image']) && count($salesorder_data['product_image'])) {
 
-            $imagefile_full_name = $salesorder_data['product_image']['name'];
-            $imagefile_name = explode('.', $imagefile_full_name);
-            $image_file_extension  = $imagefile_name[1];
-            
-            $product_image = sha1(microtime())."_".$imagefile_full_name;
-            
-            $src = explode(',', $salesorder_data['product_image']['data']);
-            
-            $image_src_path = $imagePath.'/'.$product_image;
-            
-            $image_src_data = base64_decode($src[1]);
-            file_put_contents($image_src_path,$image_src_data);
-            
-            $save_sales_data->image = $product_image;
-            $save_sales_data->save();
 
+            if (isset($salesorder_data['product_image']) && count($salesorder_data['product_image'])) {
+
+                $imagefile_full_name = $salesorder_data['product_image']['name'];
+                $imagefile_name = explode('.', $imagefile_full_name);
+                $image_file_extension  = $imagefile_name[1];
+                
+                $product_image = sha1(microtime())."_".$imagefile_full_name;
+                
+                $src = explode(',', $salesorder_data['product_image']['data']);
+                
+                $image_src_path = $imagePath.'/'.$product_image;
+                
+                $image_src_data = base64_decode($src[1]);
+                file_put_contents($image_src_path,$image_src_data);
+                
+                $data[] =  $product_image;
+                
+                //return print_r($product_image);
+              //  $save_sales_data->image = $product_image;
+               // return print_r($save_sales_data);
+    
+                
+            }
             
         }
+
+        return print_r(json_encode($data));
+
+       $save_sales_data->image = json_encode($data);
+      $save_sales_data->save();
+
         $save_detail->product_image = $save_sales_data;
 
         $view  = 'admin.salesorder.so_mail';
         $subject = 'Sales Order';
 
 
-        //return print_r($save_sales_data);
+        return print_r($save_sales_data);
        // return ['product_item'=>$salesorder_data['product'],'id'=>$save_detail->id];
        // return redirect('admin/salesorder');
         

@@ -30,50 +30,51 @@ class SalesOrderRequest extends FormRequest
         case 'POST':
             {
                 $rules = [
+                    'po_no'             =>   'required',
                     // 'po_no'             =>   'required',
-                    // // 'po_no'             =>   'required',
-                    // 'order_date'        =>   'required',
-                    // 'customer_id'        =>   'required',
-                    // 'billing_title'   =>   'required',
-                    // 'customer_contact_name'      =>   'required',
-                    // 'customer_contact_email'     =>   'required|email',
-                    // 'customer_contact_no'        =>   'required|min:0|max:10|regex:'.config('regex.product.contact_no'),
-                    // 'contact_name'      =>   'required',
-                    // 'contact_email'     =>   'required|email',
-                    // 'contact_no'        =>   'required|min:0|max:10|regex:'.config('regex.product.contact_no'),
-                    // 'company_id'        =>   'required',
-                    // 'payment_terms'     =>   'required',
-                    // 'delivery'          =>    'required',
-                    // // 'advanced_received' =>    'required|regex:'.config('regex.product.price'),
-                    // 'part_shipment'     =>    'required',
-                    // 'trasport'     =>    'required',
-                    // // 'pkg_fwd'     =>    'required|regex:'.config('regex.product.price'),
-                    // 'reason_for_other_expense'     =>    'required_with:other_expense',
-                    // 'fright'     =>    'required|regex:'.config('regex.product.price'),
-                    // 'tax_subtotal'     =>    'required|regex:'.config('regex.product.price'),
+                    'order_date'        =>   'required',
+                    'customer_id'        =>   'required',
+                    'billing_title'   =>   'required',
+                    'customer_contact_name'      =>   'required',
+                    'customer_contact_email'     =>   'required|email',
+                    'customer_contact_no'        =>   'required|min:0|max:10|regex:'.config('regex.product.contact_no'),
+                    'contact_name'      =>   'required',
+                    'contact_email'     =>   'required|email',
+                    'contact_no'        =>   'required|min:0|max:10|regex:'.config('regex.product.contact_no'),
+                    'company_id'        =>   'required',
+                    'payment_terms'     =>   'required',
+                    'delivery'          =>    'required',
+                    // 'advanced_received' =>    'required|regex:'.config('regex.product.price'),
+                    'part_shipment'     =>    'required',
+                    'trasport'     =>    'required',
+                    // 'pkg_fwd'     =>    'required|regex:'.config('regex.product.price'),
+                    'reason_for_other_expense'     =>    'required_with:other_expense',
+                    'fright'     =>    'required|regex:'.config('regex.product.price'),
+                    'tax_subtotal'     =>    'required|regex:'.config('regex.product.price'),
                 ];
                 if(isset($data['check_billing'])){
                     if($data['check_billing'] == false){
-                        // $rules['shipping_address'] =   'required';
-                        // $rules['countryid']        =   'required';
-                        // $rules['pin_code']          =   'required';
-                        // $rules['stateid']          =   'required';
-                        // $rules['cityid']           =   'required';
+                        $rules['shipping_address'] =   'required';
+                        $rules['countryid']        =   'required';
+                        $rules['pin_code']          =   'required';
+                        $rules['stateid']          =   'required';
+                        $rules['cityid']           =   'required';
                     }
                 }else{
-                    // $rules['shipping_address'] =   'required';
-                    // $rules['countryid']        =   'required';
-                    // $rules['pin_code']          =   'required';
-                    // $rules['stateid']          =   'required';
-                    // $rules['cityid']           =   'required';
+                    $rules['shipping_address'] =   'required';
+                    $rules['countryid']        =   'required';
+                    $rules['pin_code']          =   'required';
+                    $rules['stateid']          =   'required';
+                    $rules['cityid']           =   'required';
                 }
                 $arr  = ['image/png','image/jpeg','application/pdf','application/docx'];
                 if(isset($data['product_image']) == false){
                     $rules['product_image'] =   'required';
 
-                }else if(!in_array($data['product_image']['type'],$arr)){
-                    $rules['product_image'] =   'mimes:jpeg,image/png,pdf,docx';
-                }
+                 }
+                //  else if(!in_array($data['product_image']['type'],$arr)){
+                //      $rules['product_image'] =   'mimes:jpeg,image/png,pdf,docx';
+                //  }
                 return $rules;
             }
         case 'PATCH':

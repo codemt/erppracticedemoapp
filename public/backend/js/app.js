@@ -484,19 +484,20 @@ salesorderApp.controller('SalesOrderController', function($scope, $rootScope, $h
         }).success(function(response) {
 
 			console.log(response);
+			toastr.success(msg);
         	$('#loader').hide();
-            if (response.redirect != 'back') {
-                toastr.success(msg);
-            	setTimeout(function() {
-            		location.href = response.redirect;
-                },1000);
+            // if (response.redirect != 'back') {
+               
+            // 	setTimeout(function() {
+            // 		location.href = response.redirect;
+            //     },1000);
             	
-            }else{
-                toastr.success(msg);
-            	setTimeout(function() {
-            		location.reload();
-                },1000);
-            }
+            // }else{
+            //     toastr.success(msg);
+            // 	setTimeout(function() {
+            // 		location.reload();
+            //     },1000);
+            // }
         }).error(function(error_response){
 			console.log(error_response);
         	$('#loader').hide();
