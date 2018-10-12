@@ -1411,6 +1411,8 @@ class SalesOrderController extends Controller
                 $image_src_data = base64_decode($src[1]);
                 file_put_contents($image_src_path,$image_src_data);
                 
+                // $data = array();
+                // array_push($data,$product_image);
                 $data[] =  $product_image;
                 
                 //return print_r($product_image);
@@ -1422,9 +1424,9 @@ class SalesOrderController extends Controller
             
         }
 
-        return print_r(json_encode($data));
+      // return print_r(json_encode(array_values($data)));
 
-       $save_sales_data->image = json_encode($data);
+       $save_sales_data->image = json_encode($data,JSON_FORCE_OBJECT);
       $save_sales_data->save();
 
         $save_detail->product_image = $save_sales_data;

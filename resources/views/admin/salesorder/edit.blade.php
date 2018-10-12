@@ -951,7 +951,9 @@
                                              <input class="inputfile" id="file" type="file" ng-file-model="salesorder.product_image" name="product_image">
 
                                              <label for="file"><span class="file-box" id="file-name"></span><span class="file-button">Browse</span></label>
-                                             <a href='<?= LOCAL_IMAGE_PATH."salesorder/".$sales_order['image']?>' target="_blank">View</a>
+                                              @foreach(json_decode($sales_order['image'],true) as $value )
+                                             <a href='<?= LOCAL_IMAGE_PATH."salesorder/".$value ?>' target="_blank">View</a>
+                                              @endforeach  
                                              <span id="product_image_error" class="help-inline text-danger"><?=$errors->first('image')?></span>
                                          </div>
                                     </div>
