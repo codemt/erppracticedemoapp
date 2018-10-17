@@ -40,6 +40,11 @@ class SalesOrderApprovalUpdateJob
         $salesorder_data = $this->salesorder_data;
         unset($salesorder_data['value']);
         $id = $salesorder_data['id'];
+
+        \Log::info($salesorder_data);
+        // convert into json object for storing in db.
+        $salesorder_data['image'] = json_encode($salesorder_data['image'],JSON_FORCE_OBJECT);
+
         //billing title is used instead of billing id bcz of shipping address id not saved
         $billing_id = $salesorder_data['billing_title'];
         $billing = AddressMaster::where('id',$billing_id)->first();
@@ -65,9 +70,15 @@ class SalesOrderApprovalUpdateJob
                 $save_detail['check_billing'] = "0";
             }
         }
+
         $save_detail['billing_id'] = $salesorder_data['billing_id'];
-        $save_detail['billing_title'] = $billing['title'];
-        $save_detail['billing_address'] = $billing['address'];
+        $save_detail['billing_title'] = $salesorder_data['billing_title'];
+        $save_detail['billing_address'] = $salesorder_data['billing_address'];
+        $save_detail['shipping_address'] = $salesorder_data['shipping_address'];
+        $save_detail['stateid'] = $salesorder_data['stateid'];
+        $save_detail['cityid'] = $salesorder_data['cityid'];
+        $save_detail['pin_code'] = $salesorder_data['pin_code'];
+        $save_detail['countryid'] = $salesorder_data['countryid'];
         
         // print_r($save_detail);
         // exit();
@@ -83,22 +94,35 @@ class SalesOrderApprovalUpdateJob
         //store image
         $save_sales_data = SalesOrder::where('id',$save_detail->id)->first();
         $imagePath = public_path("upload/salesorder");
+
         if (isset($salesorder_data['product_image']) && count($salesorder_data['product_image'])) {
 
-            $imagefile_full_name = $salesorder_data['product_image']['name'];
-            $imagefile_name = explode('.', $imagefile_full_name);
-            $image_file_extension  = $imagefile_name[1];
+        foreach($salesorder_data['product_image'] as $salesorder_data['product_image']){ 
 
-            $product_image = sha1(microtime())."_".$imagefile_full_name;
-            $src = explode(',', $salesorder_data['product_image']['data']);
-            
-            $image_src_path = $imagePath.'/'.$product_image;
-            
-            $image_src_data = base64_decode($src[1]);
-            file_put_contents($image_src_path,$image_src_data);
-            $save_sales_data->image = $product_image;
+
+           
+
+                $imagefile_full_name = $salesorder_data['product_image']['name'];
+                $imagefile_name = explode('.', $imagefile_full_name);
+                $image_file_extension  = $imagefile_name[1];
+    
+                $product_image = sha1(microtime())."_".$imagefile_full_name;
+                $src = explode(',', $salesorder_data['product_image']['data']);
+                
+                $image_src_path = $imagePath.'/'.$product_image;
+                
+                $image_src_data = base64_decode($src[1]);
+                file_put_contents($image_src_path,$image_src_data);
+                $data[] =  $product_image;
+            }
+
+            $save_sales_data->image = json_encode($data,JSON_FORCE_OBJECT);
             $save_sales_data->save();
+
         }
+
+         
+       
         // $save_detail->product_image = $save_sales_data;
         // dd($save_detail);
         return ['product_item'=>$salesorder_data['product'],'id'=>$id];

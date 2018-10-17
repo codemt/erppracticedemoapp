@@ -952,19 +952,27 @@
                             </div>
                             <div class="col-md-4">
                                <div class="form-group " id="image_error_div">
-                                    <div class="col-md-12">File<sup class="text-danger">*</sup></div>
+                                    <div class="col-md-12">Files Uploaded <sup class="text-danger">*</sup></div>
+                                    <div class="col-md-12" id="filediv">
+                                        <div class="input-group control-group increment">
+                                            <div class="control-group input-group"  style="margin-top:10px">
+                                                    <input type="file" ng-file-model="salesorder.product_image"  name="filename[]" class="form-control" multiple />
+                                                        <div class="input-group-btn"> 
+                                                        <button  class="btn btn-success" type="button" style="background-color: black;"><i class="glyphicon glyphicon-plus"></i>Browse</button>
+                                                        </div>
+
+                                            </div>    
+                                      </div>
+                                    </div>
                                     <div class="col-md-12">
                                         <div class="inputfile-box">
-                                             <input class="inputfile" id="file" type="file" ng-file-model="salesorder.product_image" name="product_image">
-
-                                             <label for="file"><span class="file-box" id="file-name"></span><span class="file-button">Browse</span></label>
-                                             <span id="product_image_error" class="help-inline text-danger"><?=$errors->first('image')?></span>
                                            @foreach($sales_order['image'] as $value )
                                              <a href='<?= LOCAL_IMAGE_PATH."salesorder/".$value ?>' target="_blank">View</a>
                                             @endforeach  
                                          </div>
                                     </div>
                                 </div>
+                                <a  ng-click="addButton()" class="fa fa-plus-circle fa-small pull-left" id="addmore">  </a>
                             </div>
                         </div>
                     </div>

@@ -43,14 +43,23 @@ class SOCreationSendMailJob implements ShouldQueue{
 		$data = $this->data;
 
 		Mail::send($view, ['data'=>$data], function ($message) use ($emails,$subject,$data) {
-            foreach ($emails as $email=>$email_value) {
+
+			
+			foreach ($emails as $email=>$email_value) {
                 $message->to($email_value);
-                $message->cc('karishma.thinktanker@gmail.com');
+                $message->cc('mithilesh.t@itransparity.com');
 	            $message->subject($subject);
 	            // $message->from('jaydeep@tritonprocess.com');
 	            $message->from('divyapatel2109@gmail.com');
-            }
-            $message->attach(LOCAL_IMAGE_PATH.'salesorder/'.$data['image']);
+			}
+
+			foreach(json_decode($data['image'],true) as $value ){
+
+
+				$message->attach(LOCAL_IMAGE_PATH.'salesorder/'.$value);
+
+
+			}
         });
 	}
 }
