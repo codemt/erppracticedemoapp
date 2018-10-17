@@ -71,10 +71,18 @@ class SalesOrderRequest extends FormRequest
                 if(isset($data['product_image']) == false){
                     $rules['product_image'] =   'required';
 
-                 }
-                //  else if(!in_array($data['product_image']['type'],$arr)){
-                //      $rules['product_image'] =   'mimes:jpeg,image/png,pdf,docx';
-                //  }
+                }
+                
+                foreach($data['product_image'] as $data['product_image'] )
+                {
+
+                    if(!in_array($data['product_image']['type'],$arr)){
+                        $rules['product_image'] =   'mimes:jpeg,image/png,pdf,docx';
+                    }
+
+
+                }    
+               
                 return $rules;
             }
         case 'PATCH':
@@ -118,9 +126,15 @@ class SalesOrderRequest extends FormRequest
                 } 
                 $arr  = ['image/png','image/jpeg','application/pdf','application/docx'];
                 
-                if(isset($data['product_image']) and !in_array($data['product_image']['type'],$arr)){
-                    $rules['product_image'] =   'mimes:jpeg,image/png,pdf,docx';
-                }
+                foreach($data['product_image'] as $data['product_image'] )
+                {
+
+                    if(!in_array($data['product_image']['type'],$arr)){
+                        $rules['product_image'] =   'mimes:jpeg,image/png,pdf,docx';
+                    }
+
+
+                }  
                 return $rules;
             }
         default:break;

@@ -5,8 +5,6 @@
     <input type="hidden" name="id" value="<?= $id?>" id="id">
 @stop
 @section('top_fixed_content')
-<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
-<script>tinymce.init({ selector:'textarea' });</script>
 <div id="loader" style="display: none;">
   <div class="loader"><img src="<?= IMAGE_PATH.'backend/images/loader.gif'?>"></div>
 </div>
@@ -28,7 +26,7 @@
         <div class="col-md-12 mb-30">
             <div class="card">
                 <div class="card-title-w-btn">
-                        <h4 class="title">Sales Order</h4>
+                        <h4 class="title">Sales Order - Edit - V2 </h4>
                 </div><hr>
                 <div class="row">
                     <div class="col-md-12">
@@ -394,10 +392,6 @@
                 <div class="modal-header">
                     <button type="button" class="close" ng-click="soc.modalCancel()">&times;</button>
                     <h3 class="modal-title" id="modal-title">{%new_product[0].supplier_name%}'s Products</h3>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" type="button" ng-click="soc.modalOk()">OK</button>
-                        <button class="btn btn-warning" type="button" ng-click="soc.modalCancel()">Cancel</button>
-                    </div>
                 </div>
                 <div class="modal-body table-container" id="modal-body">
                     <div class=" col-md-12">
@@ -463,7 +457,6 @@
                                     <tr>
                                         <td style="font-size: 13px;border: medium none;width: 40%;padding-left:0 "><strong>SOA No:</strong></td>
                                         <td style="width: 60%">{% sales_order_data.so_no%}</td>
-                                        
                                     </tr>
                                     <tr>
                                         <td style="font-size: 13px;border: medium none;width: 40%;padding-left:0 "><strong>Date:</strong></td>
@@ -922,7 +915,7 @@
                                        <div class="form-group " id="reason_for_other_expense_error_div">
                                             <div class="col-md-12">Reason For Other Expense</div>
                                             <div class="col-md-12">
-                                                <?= Form::text('reason_for_other_expense',old('reason_for_other_expense'),array('class' => 'form-control','placeholder'=>'Reason For Other Expense','rows'=>'6','ng-model'=>'salesorder.reason_for_other_expense')) ?>
+                                                <?= Form::textarea('reason_for_other_expense',old('reason_for_other_expense'),array('class' => 'form-control','placeholder'=>'Reason For Other Expense','rows'=>'6','ng-model'=>'salesorder.reason_for_other_expense')) ?>
                                                 <span id="reason_for_other_expense_error" class="help-inline text-danger"><?=$errors->first('reason_for_other_expense')?></span>
                                             </div>
                                         </div> 
@@ -958,10 +951,10 @@
                                              <input class="inputfile" id="file" type="file" ng-file-model="salesorder.product_image" name="product_image">
 
                                              <label for="file"><span class="file-box" id="file-name"></span><span class="file-button">Browse</span></label>
-                                             <span id="product_image_error" class="help-inline text-danger"><?=$errors->first('image')?></span>
-                                           @foreach($sales_order['image'] as $value )
+                                              @foreach(json_decode($sales_order['image'],true) as $value )
                                              <a href='<?= LOCAL_IMAGE_PATH."salesorder/".$value ?>' target="_blank">View</a>
-                                            @endforeach  
+                                              @endforeach  
+                                             <span id="product_image_error" class="help-inline text-danger"><?=$errors->first('image')?></span>
                                          </div>
                                     </div>
                                 </div>
@@ -981,12 +974,10 @@
                         <div class="col-md-6">
                             <div class="form-group" id="tax_subtotal_error_div">
                                 <div class="col-md-12">Tax On Subtotal</div>
-                                <div class="col-md-12">         
-                                    <?= Form::select('taxrate',config('Constant.taxrate'),old('taxrate'),array('class' => 'form-control','placeholder'=>'Tax Rate','id'=>'taxrate','ng-model'=>'salesorder.taxrate','ng-change'=>'updateValue()')) ?>
-                                   <span id="trasport_error" class="help-inline text-danger"><?=$errors->first('trasport')?></span>
-                               <?= Form::text('tax_subtotal', old('tax_subtotal'),array('class' => 'form-control select2 number_only','id'=>'tax_subtotal','placeholder'=>'Tax On Subtotal','ng-model'=>'salesorder.tax_subtotal','ng-change'=>'updateValue()','readonly'=>true)) ?>
-                               <span id="tax_subtotal_error" class="help-inline text-danger"><?=$errors->first('tax_subtotal')?></span>
-                           </div>
+                                <div class="col-md-12">
+                                    <?= Form::text('tax_subtotal', old('tax_subtotal'),array('class' => 'form-control select2 number_only','id'=>'tax_subtotal','placeholder'=>'Tax On Subtotal','ng-model'=>'salesorder.tax_subtotal','ng-change'=>'updateValue()','readonly'=>true)) ?>
+                                    <span id="tax_subtotal_error" class="help-inline text-danger"><?=$errors->first('tax_subtotal')?></span>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -1071,7 +1062,6 @@
         var so_no = "<?= $sono ?>";
         var removeproducturl = "<?= URL::route('salesorder.removeproducts',$id)?>";
         var getsupplierproducturl = "<?= URL::route('salesorder.getSupplierProducts')?>";
-        var view_url = "<?= URL::route('salesorder.soview')?>";
         var redirect_url = "<?= route('salesorder.index')?>";
         var approve_url = "<?= route('salesorder.approval.update',$id)?>"
         var on_hold_url = "<?= route('salesorder.onhold.update',$id)?>"
@@ -1081,7 +1071,6 @@
         //view
         var sales_order_data = JSON.parse('{!! $sales_order_data !!}');
         var order_item_pdf = JSON.parse('{!! $order_item_pdf !!}');
-        console.log("ORDER ITEM PDFS are " +JSON.stringify(order_item_pdf));
         var hsn_codes = JSON.parse('{!! $hsn_codes !!}');
         var country_id = '';
         var state_id = '';

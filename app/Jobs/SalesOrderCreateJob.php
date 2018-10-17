@@ -33,14 +33,18 @@ class SalesOrderCreateJob
     public function handle(Request $request)
     {
         $salesorder_data = $this->salesorder_data; 
-        unset($salesorder_data['id']);
 
+        $finalorder = json_decode(json_encode($salesorder_data),true);
+        unset($salesorder_data['id']);
+       // return print_r($finalorder[0]['check_billing']);
         //generate SO No At time of store
 
         $user_id = $salesorder_data['user']['id'];
         $user_data = Admin::select('admins.id as adminid','admins.status as admin_status','admins.region as zone')->where('admins.status','approve')->where('admins.id',$user_id)->first();
 
         $zone = explode(' ',$user_data['zone']);
+
+            //   return print_r($salesorder_data['po_no']);
         $zone = $zone[0];
         $zone_char = '';
         $sono = '';
@@ -88,13 +92,17 @@ class SalesOrderCreateJob
                 $so_nos = [];
                 if($so_no_count > 0){
                     foreach ($so_no as $key => $value) {
-                         dd($value);
+                          //dd(print_r($value));
                         $no = substr($value['so_no'],0,2);
+                       // dd(print_r($no));
                         if($no != 'NA'){
                             $so_nos[] = $value;
                         }
                     }
-                    $so_no = $so_nos['0'];
+                   
+                    $so_no = head($so_nos);
+                   // $so_no = $so_nos[0];
+                  //  dd(print_r($so_no));
                     $zone_char = ucfirst(substr($so_no['so_no'], 0,1));
                     if($so_no == null){
                         $zone_char = $zone;
@@ -122,8 +130,20 @@ class SalesOrderCreateJob
                     }else{
                         $sono = $zone . '001';
                     }
+                    
+
+                
                 }
         }
+
+      //  $sono = json_decode($salesorder_data['so_no']);
+
+
+       // return print_r($salesorder_data['so_no']);
+
+        
+
+            
         $id = null;
         if(isset($salesorder_data['reorder'])){
             $billing_id = $salesorder_data['billing_id'];
@@ -133,6 +153,7 @@ class SalesOrderCreateJob
         $billing = AddressMaster::where('id',$billing_id)->first();
         $save_detail = SalesOrder::firstOrNew(['id' => $id]);
         $save_detail->fill($salesorder_data);
+       // return print_r($sono);
         $save_detail->so_no = $sono;
         if(isset($salesorder_data['check_billing'])){
             if($salesorder_data['check_billing'] == true){
@@ -148,7 +169,7 @@ class SalesOrderCreateJob
             }
 
         }
-        //Log::info($save_detail);
+        \Log::info($save_detail);
 
         $save_detail['billing_title'] = $billing['title'];
         $save_detail['billing_address'] = $billing['address'];
@@ -160,7 +181,7 @@ class SalesOrderCreateJob
         }else{
             $save_detail['status'] = config('Constant.status.pending');
         }
-        // dd($save_detail);
+      //   return print_r($save_detail);
         $save_detail['created_by'] = $user_id['id'];
         $save_detail->save();
 
@@ -170,24 +191,34 @@ class SalesOrderCreateJob
         $save_sales_data = SalesOrder::where('id',$save_detail->id)->first();
         $imagePath = public_path("upload/salesorder");
 
-        if (isset($salesorder_data['product_image']) && count($salesorder_data['product_image'])) {
 
-            $imagefile_full_name = $salesorder_data['product_image']['name'];
-            $imagefile_name = explode('.', $imagefile_full_name);
-            $image_file_extension  = $imagefile_name[1];
+        foreach($salesorder_data['product_image'] as $salesorder_data['product_image']){
 
-            $product_image = sha1(microtime())."_".$imagefile_full_name;
 
-            $src = explode(',', $salesorder_data['product_image']['data']);
-            
-            $image_src_path = $imagePath.'/'.$product_image;
-            
-            $image_src_data = base64_decode($src[1]);
-            file_put_contents($image_src_path,$image_src_data);
-            
-            $save_sales_data->image = $product_image;
-            $save_sales_data->save();
-        }
+            if (isset($salesorder_data['product_image']) && count($salesorder_data['product_image'])) {
+
+                $imagefile_full_name = $salesorder_data['product_image']['name'];
+                $imagefile_name = explode('.', $imagefile_full_name);
+                $image_file_extension  = $imagefile_name[1];
+    
+                $product_image = sha1(microtime())."_".$imagefile_full_name;
+    
+                $src = explode(',', $salesorder_data['product_image']['data']);
+                
+                $image_src_path = $imagePath.'/'.$product_image;
+                
+                $image_src_data = base64_decode($src[1]);
+                file_put_contents($image_src_path,$image_src_data);
+                $data[] =  $product_image;
+
+            }
+           
+
+         }
+
+         $save_sales_data->image = json_encode($data,JSON_FORCE_OBJECT);
+         $save_sales_data->save();
+       
         $save_detail->product_image = $save_sales_data;
         $view  = 'admin.salesorder.so_mail';
         $subject = 'Sales Order';

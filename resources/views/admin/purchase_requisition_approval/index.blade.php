@@ -10,7 +10,7 @@
     <div style="width: 21%;min-width: 200px;">
         <form id="frm_filter" name ="frm_filter">
             <div class="form-group" style="margin-bottom: 0">
-                <div class="input-group date_range">      
+                <div class="input-group date_range">
                     <div class="input-group-addon"><i class="fa fa-fw fa-calendar"></i></div>
                     <input type="text" name="yoy[]" class="form-control pull-right" id="date_range_1">
                 </div>
@@ -20,7 +20,7 @@
     <div class="top_filter"></div>
     <div class="pl-10">
       <a href="<?= route('purchase.requisition-approval.export')?>" class="btn btn-default btn-sm" title="Export to CSV">Export</a>
-        <a href="{{ url('admin/purchase-requisition-approval/reorder') }}" class="btn btn-primary btn-sm disabled-btn">ReOrder </a>
+      {{-- <a href="{{ url('admin/purchase-requisition-approval/reorder') }}" class="btn btn-primary btn-sm disabled-btn">Restore Deleted Orders </a> --}}
     </div>
 </nav>
 @stop
@@ -51,16 +51,14 @@
             <table id="purchase_requisition_table" class="table table-hover">
                <thead>
                   <tr>
-                    {{-- @if(App\Helpers\DesignationPermissionCheck::isPermitted('distributor.delete')) --}}
                      <th class="select-all no-sort">
                         <div class="animated-checkbox">
                            <label class="m-0">
                            <input type="checkbox" id="checkAll" />
-                           <span class="label-text">  </span>
+                           <span class="label-text"></span>
                            </label>
                         </div>
-                     </th>  
-                     {{-- @endif   --}}
+                     </th>
                     <th>Company Name</th>
                     <th>Creation Date</th>
                     <th>Approval Date</th>
@@ -77,7 +75,6 @@
          @include('admin.layout.overlay')
       </div>
    </div>
-   {{-- <button type="submit"></button> --}}
 </div>
 @stop
 @section('script')
@@ -161,10 +158,7 @@
                     if (v == "<?= config('Constant.status.approve')?>") {
                         var act_html = '<span class="badge badge-success"><?= ucwords(config('Constant.status.approve'))?></span>';
                     }else if(v == "<?= config('Constant.status.pending')?>"){
-                        
                         var act_html = '<span class="badge badge-danger"><?= ucwords(config('Constant.status.pending'))?></span>';
-                    
-                       
                     }else if(v == "<?= config('Constant.status.ammended approve')?>"){
                         var act_html = '<span class="badge badge-info"><?= ucwords(config('Constant.status.ammended approve'))?></span>';
                     }else if(v == "<?= config('Constant.status.received')?>"){
@@ -180,7 +174,8 @@
                     }
                     return act_html;}, },
             { mData:"po_no",bSortable : true,sClass : 'text-center',sWidth:"10%" 
-            },       
+            }, 
+
         ],
         fnPreDrawCallback : function() { $("div.overlay").css('display','flex'); },
         fnDrawCallback : function (oSettings) {

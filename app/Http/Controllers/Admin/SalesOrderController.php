@@ -10,7 +10,6 @@ use App\Models\State;
 use App\Models\City;
 use App\Models\BillingAddress;
 use App\Models\SalesOrder;
-use Illuminate\Support\Facades\Storage;
 use App\Models\SalesOrderItem;
 use App\Models\ProductMaster;
 use App\Models\SupplierMaster;
@@ -281,29 +280,21 @@ class SalesOrderController extends Controller
     }
     public function store(SalesOrderRequest $request){
 
-      
-       
-       $sales_data = $request->all();
-
-       $sales_data['user'] = auth()->guard('admin')->user();
-
-
-       $this->createsalesorder($sales_data);
+        $sales_data = $request->all();
+        // dd($sales_data);
+        $sales_data['user'] = auth()->guard('admin')->user();
         
-    //    Event::fire(new SalesOrderCreateEvent($sales_data)); 
-    //    if ($request->save_button == 'save_new') {
-    //        return response()->json(['success'=>true,'redirect'=>'back']);
-    //    }
-    //    return response()->json(['success'=>true,'redirect'=>route('salesorder.index')]);
-        
-
+        Event::fire(new SalesOrderCreateEvent($sales_data));
+        if ($request->save_button == 'save_new') {
+            return response()->json(['success'=>true,'redirect'=>'back']);
+        }
+        return response()->json(['success'=>true,'redirect'=>route('salesorder.index')]);
     }
-
     
     public function edit($id){
         $sales_order = SalesOrder::find($id); 
         $sales_order_items = SalesOrderItem::select('sales_order_item.qty as quantity','product_master.name_description as productname','sales_order_item.model_no as model_no','sales_order_item.unit_value as unit_value','sales_order_item.total_value as total_value','sales_order_item.tax_value as tax_value','sales_order_item.list_price as price','supplier_masters.id as supplier_id','supplier_masters.supplier_name as suppliers','sales_order_item.manu_clearance as manu_clearance','sales_order_item.discount_applied as discount_applied','sales_order_item.product_id as id','product_master.max_discount as max_discount','product_master.tax as tax')->where('sales_order_id',$id)->leftjoin('product_master','product_master.id','=','sales_order_item.product_id')->leftjoin('supplier_masters','supplier_masters.id','=','sales_order_item.supplier_id')->get()->toArray();
-        
+       // dd($sales_order_items);
         $sales_order_item = [];
         foreach ($sales_order_items as $key => $value) {
             $sales_order_item[$value['id']] = $value;
@@ -338,6 +329,9 @@ class SalesOrderController extends Controller
                                                 ->where('product_master.product_status',1)
                                                 ->get()
                                                 ->toJson();
+
+
+
 
         $supplier_data = SupplierMaster::select('*')->where('company_id',$sales_order['company_id'])->get();
 
@@ -446,6 +440,10 @@ class SalesOrderController extends Controller
 
 
         $hsn_codes = json_encode($hsn_codes);
+
+        // Decode image files.
+        $sales_order['image'] = json_decode($sales_order['image']);
+        $sales_order_data['image'] = json_decode($sales_order_data['image']);
         $ntw = new \NTWIndia\NTWIndia();
 
         //rupees in word
@@ -483,6 +481,8 @@ class SalesOrderController extends Controller
         $sales_order->billing_address = str_replace("\n", "", $sales_order->billing_address);
 
         $sales_order->shipping_address = str_replace("\n", "", $sales_order->shipping_address);
+
+          // return $sales_order_data;
 
         return view('admin.salesorder.edit',compact('companies','states','cities','billing_address','product_data','sono','sales_person','sales_order','id','sales_order_item','supplier_data','countries','states','customers','is_approve','is_show_approve_btn','is_show_hold_btn','sales_order_data','order_item_pdf','hsn_codes'));
     }
@@ -609,9 +609,11 @@ class SalesOrderController extends Controller
     public function approvalUpdate(SalesOrderRequest $request){
         
         $sales_data = $request->all();
-        // print_r($sales_data);
-        // exit();
+       // print_r($sales_data);
+       // exit();
         $sales_data['user'] = auth()->guard('admin')->user();
+       // print_r($sales_data['id']);
+       // exit();
         $sales_data['pdf_path'] = public_path();
         
         Event::fire(new SalesOrderApprovalUpdateEvent($sales_data));
@@ -676,7 +678,7 @@ class SalesOrderController extends Controller
         //so NO
         $user_id = Auth::guard('admin')->user()->id;
         $user_data = Admin::select('admins.id as adminid','admins.status as admin_status','admins.region as zone')->where('admins.status','approve')->where('admins.id',$user_id)->first();
-       // return $user_data;
+
         $zone = explode(' ',$user_data['zone']);
         $zone = $zone[0];
         $zone_char = '';
@@ -724,16 +726,13 @@ class SalesOrderController extends Controller
                 $so_nos = [];
                 if($so_no_count > 0){
                     foreach ($so_no as $key => $value) {
-                       //  dd($value);
+                        // dd($value);
                         $no = substr($value['so_no'],0,2);
-                        //dd($no);
                         if($no != 'NA'){
                             $so_nos[] = $value;
                         }
-                        
                     }
                     $so_no = $so_nos[0];
-                    
                 }else{
                     $so_no = null;
                 }
@@ -826,7 +825,6 @@ class SalesOrderController extends Controller
     public function reOrderStore(SalesOrderRequest $request){
         // dd('hi');
         $sales_data = $request->all();
-        return $sales_data;
         $sales_data['user'] = auth()->guard('admin')->user();
         $sales_data['reorder'] = true;
         
@@ -1213,273 +1211,4 @@ class SalesOrderController extends Controller
         return ['customers'=>$customers,'suppliers'=>$suppliers];
 
     }
-
-
-
-    public function createsalesorder($sales_data)
-    {
-
-            $salesorder_data = $sales_data;
-      
-                //return print_r($salesorder_data);
-              // return $salesorder_data;
-                    //return $salesorder_data;
-            
-           
-        unset($salesorder_data['id']);
-
-        //generate SO No At time of store
-
-       // $user_id = $salesorder_data['user_id']; 
-       // $user_id = $salesorder_data['roleid']['user_id'];
-        $user_id = $salesorder_data['user']['id'];
-       // return print_r($user_id);
-        
-        $user_data = Admin::select('admins.id as adminid','admins.status as admin_status','admins.region as zone')->where('admins.status','approve')->where('admins.id',$user_id)->first();
-
-        $zone = explode(' ',$user_data['zone']);
-        $zone = $zone[0];
-        $zone_char = '';
-        $sono = '';
-        if($zone == "NA"){
-            $so_no = SalesOrder::select('so_no')->where('so_no','LIKE',"NA%")->orderBy('so_no','desc')->first();
-            $zone_char = ucfirst(substr($so_no['so_no'], 0,2));
-            if($so_no == null){
-                $zone_char = $zone;
-            }else{
-                $zone_char = ucfirst(substr($so_no['so_no'], 0,2));
-            }
-            $so_no = substr($so_no['so_no'], 2) + 1;
-            $lenstr = strlen($so_no);
-            if($lenstr == 1){
-                $sono = $zone_char .'00' . $so_no;
-            }elseif($lenstr == '2'){
-                $sono = $zone_char .'0' . $so_no;
-            }else{
-                $sono = $zone_char .$so_no;
-            }
-            
-        }elseif($zone == "OEM"){
-            $so_no = SalesOrder::select('so_no')->where('so_no','LIKE',"OEM%")->orderBy('so_no','desc')->first();
-
-            $zone_char = ucfirst(substr($so_no['so_no'], 0,3));
-            if($so_no == null){
-                $sono = 'OEM400';
-            }else{
-                $zone_char = ucfirst(substr($so_no['so_no'], 0,3));
-                $so_no = substr($so_no['so_no'], 3) + 1;
-                $lenstr = strlen($so_no);
-                if($lenstr == 1){
-                    $sono = $zone_char .'00' . $so_no;
-                }elseif($lenstr == '2'){
-                    $sono = $zone_char .'0' . $so_no;
-                }else{
-                    $sono = $zone_char .$so_no;
-                }
-            }
-        }else{
-            $so_no_count = SalesOrder::select('so_no')->where('so_no','LIKE',"{$zone}%")->orderBy('so_no','desc')->count();
-            
-                $so_no = SalesOrder::select('so_no')->where('so_no','LIKE',"{$zone}%")->orderBy('so_no','desc')->get()->toArray();
-                //dd($so_no);
-              //  $so_nos = [];
-              $so_nos = array();
-                if($so_no_count > 0){
-                    foreach ($so_no as $key => $value) {
-                        // dd($value);
-                        $no = substr($value['so_no'],0,2);
-                       // dd($no,$value,$so_no);
-                        if($no == 'NA'){
-                            $so_nos[] = $value;
-                            
-                        }
-
-                    }
-
-                  // dd($so_nos);
-                    $so_no = $so_nos[0];
-                    $zone_char = ucfirst(substr($so_no['so_no'], 0,1));
-                    if($so_no == null){
-                        $zone_char = $zone;
-                    }else{
-                        $zone_char = ucfirst(substr($so_no['so_no'], 0,1));
-                    }
-                   // dd($so_no['so_no']);
-                    $so_no = substr($so_no['so_no'], 2) + 1;
-                    $lenstr = strlen($so_no);
-                    if($lenstr == 1){
-                        $sono = $zone_char .'00' . $so_no;
-                    }elseif($lenstr == '2'){
-                        $sono = $zone_char .'0' . $so_no;
-                    }else{
-                        $sono = $zone_char .$so_no;
-                    }
-                }else{
-                    if($zone == 'N'){
-                        $sono = 'N1100';
-                    }elseif($zone == 'W'){
-                        $sono = 'W1600';
-                    }elseif($zone == 'S'){
-                        $sono = 'S2200';
-                    }elseif($zone == 'T'){
-                        $sono = 'T500';
-                    }else{
-                        $sono = $zone . '001';
-                    }
-                }
-        }
-        $id = null;
-        if(isset($salesorder_data['reorder'])){
-            $billing_id = $salesorder_data['billing_id'];
-        }else{
-            $billing_id = $salesorder_data['billing_title'];
-        }
-        $billing = AddressMaster::where('id',$billing_id)->first();
-        $save_detail = SalesOrder::firstOrNew(['id' => $id]);
-        $save_detail->fill($salesorder_data);
-        $save_detail->so_no = $sono;
-        if(isset($salesorder_data['check_billing'])){
-            if($salesorder_data['check_billing'] == true){
-                $save_detail['billing_address'] = $billing['address'];
-                $save_detail['shipping_address'] = $billing['address'];
-                $save_detail['stateid'] = $billing['state_id'];
-                $save_detail['cityid'] = $billing['city_id'];
-                $save_detail['pin_code'] = $billing['pincode'];
-                $save_detail['countryid'] = $billing['country_id'];
-            }
-            if($salesorder_data['check_billing'] == true){
-                $save_detail['check_billing'] = "1";
-            }
-
-        }
-        
-        //Log::info($save_detail);
-
-        $save_detail['billing_title'] = $billing['title'];
-        $save_detail['billing_address'] = $billing['address'];
-        $save_detail['billing_id'] = $billing_id;
-
-        $user_id = $salesorder_data['user']['id'];
-
-        //get Team id for the current user id .
-
-        //$requestid = Admin::find($id);
-        $team_id = Auth::guard('admin')->user()->team_id;
-       // dd($requestid);
-
-        if($team_id == config('Constant.superadmin')){
-            $save_detail['status'] = config('Constant.status.approve');
-        }else{
-            $save_detail['status'] = config('Constant.status.pending');
-        }
-       //  dd($save_detail);
-        $save_detail['created_by'] = $user_id;
-        $save_detail->save();
-
-        $finaldata = array($save_detail,$salesorder_data);
-
-      //  return print_r($save_detail['id']);
-
-      // Pass Data to Sales order item Table.
-        $this->salesordercreateitem($salesorder_data['product'],$save_detail['id']);
-      // $sales_order_item = dispatch(new SalesOrderCreateItemJob($salesorder_data['product'],$save_detail['id']));
-
-        //image save
-
-        
-
-        $save_sales_data = SalesOrder::where('id',$save_detail->id)->first();
-        $imagePath = public_path("upload/salesorder");
-
-    
-        foreach($salesorder_data['product_image'] as $salesorder_data['product_image']){
-
-
-
-            if (isset($salesorder_data['product_image']) && count($salesorder_data['product_image'])) {
-
-                $imagefile_full_name = $salesorder_data['product_image']['name'];
-                $imagefile_name = explode('.', $imagefile_full_name);
-                $image_file_extension  = $imagefile_name[1];
-                
-                $product_image = sha1(microtime())."_".$imagefile_full_name;
-                
-                $src = explode(',', $salesorder_data['product_image']['data']);
-                
-                $image_src_path = $imagePath.'/'.$product_image;
-                
-                $image_src_data = base64_decode($src[1]);
-                file_put_contents($image_src_path,$image_src_data);
-                
-                // $data = array();
-                // array_push($data,$product_image);
-                $data[] =  $product_image;
-                
-                //return print_r($product_image);
-              //  $save_sales_data->image = $product_image;
-               // return print_r($save_sales_data);
-    
-                
-            }
-            
-        }
-
-      // return print_r(json_encode(array_values($data)));
-
-       $save_sales_data->image = json_encode($data,JSON_FORCE_OBJECT);
-      $save_sales_data->save();
-
-        $save_detail->product_image = $save_sales_data;
-
-        $view  = 'admin.salesorder.so_mail';
-        $subject = 'Sales Order';
-
-
-        return print_r($save_sales_data);
-       // return ['product_item'=>$salesorder_data['product'],'id'=>$save_detail->id];
-       // return redirect('admin/salesorder');
-        
-
-
-    }
-
-    public function salesordercreateitem($salesorder_data,$save_detail)
-    {
-        //store sales_order_item
-        $product_item = $salesorder_data;
-        // return print_r($product_item);
-        $id = $save_detail['id'];
-        foreach ($product_item as $key => $value) {
-            $sales_order_item = new SalesOrderItem();
-            $sales_order_item->qty = $value['quantity'];
-            $sales_order_item->sales_order_id = $id;
-            $sales_order_item->product_id = $key;
-            $sales_order_item->model_no = $value['model_no'];
-            $sales_order_item->unit_value = $value['unit_value'];
-            $sales_order_item->total_value = $value['total_value'];
-            $sales_order_item->list_price = $value['price'];
-            $sales_order_item->manu_clearance = $value['manu_clearance'];
-            $sales_order_item->discount_applied = $value['discount_applied'];
-            $sales_order_item->tax_value = $value['tax_value'];
-            $sales_order_item->supplier_id = $value['supplier_id'];
-            $user_id = Auth::guard('admin')->user();
-            $sales_order_item['created_by'] = $user_id['id'];
-
-            $max_discount = $value['max_discount'];
-            $discount_applied = $value['discount_applied'];
-            $sales_order_item->is_mail = '0';
-        
-            if($discount_applied > 0){
-                if($max_discount < $discount_applied){
-                    $sales_order_item->is_mail = '1';
-                }
-            }
-            
-            $sales_order_item->save();
-
-        }
-        
-        // return print_r($product_item);
-    }
-
 }

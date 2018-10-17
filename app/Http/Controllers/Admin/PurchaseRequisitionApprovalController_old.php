@@ -9,21 +9,16 @@ use App\Models\CompanyMaster;
 use App\Models\SupplierMaster;
 use App\Models\ProductMaster;
 use App\Models\PurchaseRequisitionDetails;
-use App\Models\DeletedRequisition;
-use DB,Event,Excel;
+use Event,Excel;
 use App\Events\UpdatePurchaseRequisitionApprovalEvent;
 use App\Http\Requests\PurchaseRequisitionApprovalRequest;
 use App\Models\AddressMaster;
 use App\Models\Distributor;
-use Illuminate\Support\Facades\Log;
 use App\Models\AclPermission;
 use App\Helpers\DesignationPermissionCheck;
 
-
 class PurchaseRequisitionApprovalController extends Controller
 {
-
-
     public function index(Request $request){
     	if($request->ajax()){
             $where_str    = "1 = ?";
@@ -93,7 +88,7 @@ class PurchaseRequisitionApprovalController extends Controller
         return $response;
     }
 
-
+        return view('admin.purchase_requisition_approval.index');
     }
 
     public function edit($id,Request $request){
@@ -423,22 +418,23 @@ class PurchaseRequisitionApprovalController extends Controller
     {
         // creating a backup , saving  in deleted table.
         // we will use Soft Delete Later on the Model , to Soft Delete the Entry.
-
-        if(DesignationPermissionCheck::isPermitted('approval.delete')){ 
-
-                $pendingId = $request->id;
-
-                PurchaseRequisition::where('id',$pendingId)->delete();
-                    //return view('test')->with('orderDetails',$orderDetails);
-                return "Record Deleted";
-
-        }
-        else {
+        if(DesignationPermissionCheck::isPermitted('purchase-requisition-approval.delete')){
 
 
-                return "Not Allowed";
+            $pendingId = $request->id;
+        
+            PurchaseRequisition::where('id',$pendingId)->delete();
+            return "Record Deleted";
 
-        }
+
+         }
+         else {
+
+
+            return "Not Allowed";
+
+    }
+
         
 
         
@@ -528,6 +524,7 @@ class PurchaseRequisitionApprovalController extends Controller
 
         return view('admin.purchase_requisition_approval.index');
     }
+    
     public function restoreOrders(Request $request){
 
 

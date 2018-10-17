@@ -1,4 +1,5 @@
 <?php
+Header("Cache-Control: max-age=3000, must-revalidate"); 
 define('LOCAL_UPLOAD_PATH',realpath(__DIR__."/upload"));
 define('PDF_PATH',realpath(__DIR__."/pdf/salesorder/"));//for del n move
 define('LOCAL_PDF_PATH',realpath(__DIR__."/pdf"));//for del n move

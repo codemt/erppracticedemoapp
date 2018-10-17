@@ -87,21 +87,15 @@
                     <ul class="treeview-menu">
                         @if(App\Helpers\DesignationPermissionCheck::isPermitted('purchase-requisition.index'))
                         <li class=" @if(Request::segment(2) == 'purchase-requisition') active @endif">
-                            <a href="<?=url('/admin/purchase-requisition')?>">
+                            <a href="<?=route('purchase-requisition.index')?>">
                             <i class="fas fa-warehouse-alt"></i>
                             <span>New</span>
                             </a>
                         </li>
-                        <li class=" @if(Request::segment(2) == 'purchase-requisition') active @endif">
-                                <a href="<?=url('/admin/purchase-requisition/reorder')?>">
-                                <i class="fas fa-warehouse-alt"></i>
-                                <span>Re Order</span>
-                                </a>
-                            </li>
                         @endif
                         @if(App\Helpers\DesignationPermissionCheck::isPermitted('purchase-requisition-approval.index'))
                         <li class=" @if(Request::segment(2) == 'purchase-requisition-approval') active @endif">
-                            <a href="<?=url('/admin/purchase-requisition-approval/index')?>">
+                            <a href="<?=route('purchase-requisition-approval.index')?>">
                             <i class="fas fa-box-check"></i>
                             <span>Approval</span>
                             </a>
@@ -130,7 +124,7 @@
                     <li class="sub-menu @if(Request::segment(2) == 'designation' || Request::segment(2) == 'systemuser') active @endif">
                         <a href="javascript:;">
                             <i class="fas fa-bars"></i>
-                            <span> System User </span>
+                            <span>System User</span>
                             <i class="fas fa-angle-right"></i>
                         </a>
                         <ul class="treeview-menu">
@@ -152,17 +146,15 @@
                             @endif    
                         </ul>   
                     </li>
-                 @endif   
-                 @if(App\Helpers\DesignationPermissionCheck::isPermitted('admin.email.dashboard'))
-                <li class=" @if(Request::segment(2) == 'systemuser') active @endif">
-                    <a href="{{ route('admin.email.dashboard') }}">
+                 @endif
+                 @if(App\Helpers\DesignationPermissionCheck::isPermitted('emails.index'))   
+                 <li class=" @if(Request::segment(2) == 'systemuser') active @endif">
+                    <a href="{{ route('emails.index') }}">
                     <i class="fa fa-envelope"></i>
-                    <span>Send Emails  </span>
+                    <span>Send Emails </span>
                     </a>
                 </li>
-                 @endif
-                 
-                
+                @endif
                 <!-- <li class=" @if(Request::segment(2) == 'billing') active @endif">
                     <a href="<?= route('billing.index') ?>">
                     <i class="fa fa-user"></i>
@@ -190,7 +182,6 @@
                         </li>
                     </ul>   
                 </li> -->
-                
                 </ul>
                 <li class="spacer"></li>
                 <li class="logout">

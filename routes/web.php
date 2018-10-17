@@ -11,7 +11,6 @@ use App\Models\ManageStock;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('temp','Admin\RouteController@test');
 
 Route::get('datainsert',function(){
@@ -33,7 +32,6 @@ Route::get('routes',[
 Route::get('/access-denied',function(){
     return view('admin.access_denied');
 })->name('access.denied');
-
 Route::get('/',function(){
 	return redirect()->route('admin.login');
 });
@@ -87,48 +85,37 @@ Route::group(array('middleware' => ['admin_guest']), function () {
 		Route::post('/admin/salesorder/soview','Admin\SalesOrderController@soView')->name('salesorder.soview');
 		Route::post('admin/salesorder/getcustomer', 'Admin\SalesOrderController@getCustomerSupplier')->name('admin.salesorder.getcustomer');
 
-		// Sales Order AJAX - Get Products Cart Data.
-		Route::post('admin/salesorder/cartdata', 'Admin\SalesOrderController@getProductData')->name('salesorder.getproductdata');
-		Route::get('admin/salesorder', 'Admin\SalesOrderController@getProductData')->name('salesorder.index');
-
 		//product master
 		Route::get('admin/product/export','Admin\ProductMasterController@export')->name('product.export');
 		Route::get('admin/product/xml/{id}','Admin\ProductMasterController@exportxml')->name('product.xml');
 
 		//purchase requisition
 		Route::get('admin/purchase-requisition/export','Admin\PurchaseRequisitionController@export')->name('purchase.requisition.export');
-		Route::get('admin/purchase-requisition/reorder','Admin\PurchaseRequisitionController@reorder')->name('purchase.requisition.reorder');
-		Route::post('/admin/purchase-requisition-approval/delete','Admin\PurchaseRequisitionApprovalController@delete')->name('approval.delete');
 
-		// reorder 
-		Route::get('/admin/purchase-requisition/reorder/{id}','Admin\ReorderController@reorder')->name('purchase.get');
+		// re order purchase requisition
+		Route::get('/admin/purchase-requisition/reorder/{id}','Admin\ReorderController@reorder')->name('reorder.create');
 		Route::post('/admin/purchase-requisition/reorder','Admin\ReorderController@create')->name('purchase.store');
-
-		// purchase requistion re-order
-		Route::get('/admin/purchase-requisition-approval/reorder','Admin\PurchaseRequisitionApprovalController@reorder')->name('purchase.reorder');
-		Route::get('/admin/purchase-requisition-approval/pendings','Admin\PurchaseRequisitionApprovalController@pendingOrders')->name('admin.reorder');
-		Route::post('/admin/purchase-requisition-approval/restore','Admin\PurchaseRequisitionApprovalController@restoreOrders')->name('admin.restore');
-
-
-		// Email Master 
-		Route::post('/admin/mails/mailtemplate','EmailMasterController@userEmailTemplate')->name('user.mail.template');
-		Route::get('/admin/mails/dashboard','Admin\EmailMasterController@index')->name('admin.email.dashboard');
-
-		// Sales Order Admin Route.
-		Route::resource('admin/salesorder', 'Admin\SalesOrderController',['except' => ['show']]);
-		Route::post('admin/salesorder','Admin\SalesOrderController@store')->name('salesorder.store');
 
 		//purchase requisition approval
 		Route::get('admin/purchase-requisition-approval/export','Admin\PurchaseRequisitionApprovalController@export')->name('purchase.requisition-approval.export');
 		Route::get('admin/pdf/{id}', 'GeneratePdfModelController@showModal')->name('pdf.showModal');
 		Route::get('admin/poSaveData', 'GeneratePdfModelController@poDataSave')->name('pdf.datasave');
-		Route::get('/admin/purchase-requisition-approval/index','Admin\PurchaseRequisitionApprovalController@getthis')->name('purchase.requisition-approval.index');
+
+		// purchase requisition delete
+		Route::post('/admin/purchase-requisition-approval/delete','Admin\PurchaseRequisitionApprovalController@delete')->name('purchase-requisition-approval.delete');
+		// purchase requistion re-order
+		Route::get('/admin/purchase-requisition-approval/reorder','Admin\PurchaseRequisitionApprovalController@reorder')->name('purchase.reorder');
+		Route::get('/admin/purchase-requisition-approval/pendings','Admin\PurchaseRequisitionApprovalController@pendingOrders')->name('admin.reorder');
+
+		// purchase requisition re-store deleted.
+		Route::post('/admin/purchase-requisition-approval/restore','Admin\PurchaseRequisitionApprovalController@restoreOrders')->name('admin.restore');
+
+		// Email Master.
+		Route::get('admin/mails/dashboard','Admin\EmailMasterController@index')->name('emails.index');
+		Route::post('/admin/mails/mailtemplate','Admin\EmailMasterController@userEmailTemplate')->name('user.mail.template');
 
 		Route::get('admin/purchase-requisition-approval/getPrItemsValue','Admin\PurchaseRequisitionApprovalController@getPrItemsValue')->name('purchase.requisition-approval.getItemValue');
 		Route::get('admin/purchase-requisition-approval/exportPrItemsValue/{id}','Admin\PurchaseRequisitionApprovalController@exportPrItemsValue')->name('purchase.requisition-approval.exportPrItem');
-
-		// Re Order Purchase Order.
-		Route::post('/admin/purchase-requisition/create','Admin\ReorderPurchaseController@store');
 
 		//supplier master
 		Route::post('admin/suppliers/getstate','Admin\SupplierMasterController@getstate')->name('suppliers.getstate');
@@ -152,16 +139,15 @@ Route::group(array('middleware' => ['admin_guest']), function () {
 		Route::get('admin/managestock/export','Admin\ManageStockController@export')->name('manage_stock.export');
 		Route::get('admin/managestock/generatepo','Admin\ManageStockController@generatePo')->name('manage_stock.generatepo');
 		Route::get('admin/managestock/jeditable/{id}','Admin\ManageStockController@QtyStore')->name('manage_stock.jeditable');
-		Route::get('admin/managestock/newindex/release/{id}','Admin\ManageStockController@release')->name('manage_stock.release');
-		Route::post('admin/managestock/jeditable','Admin\ManageStockController@block')->name('manage_stock.block');
 		Route::get('admin/managestock/fetchpoid/{id}','Admin\ManageStockController@fetchPoId')->name('manage_stock.fetchpoid');
 		Route::post('admin/managestock/postore','Admin\ManageStockController@PoStore')->name('manage_stock.postore');
 		Route::get('admin/managestock/removepoitem','Admin\ManageStockController@removePoItem')->name('manage_stock.removepoitem');
 		Route::get('admin/managestock/randomredirect','Admin\ManageStockController@randomRedirect')->name('manage_stock.randomredirect');
 		Route::post('admin/managestock/getsupplier','Admin\ManageStockController@getSupplier')->name('admin.managestock.getsupplier');
 
-		// manage new stock - modified
-		Route::get('admin/managestock/newindex', 'Admin\ManageStockController@newindex')->name('manage_stock.newindex');
+		// manage stock v2
+		Route::get('admin/managestock/newindex/release/{id}','Admin\ManageStockController@release')->name('block-qty.release');
+		Route::post('admin/managestock/jeditable','Admin\ManageStockController@block')->name('block-qty.create');
 		
 		//company master
 		Route::post('admin/companymaster/getcity','Admin\CompanyMasterController@getcity')->name('companymaster.getcity');
@@ -201,28 +187,21 @@ Route::group(array('middleware' => ['admin_guest']), function () {
 			Route::get('admin/data',['as'=>'admin.data.index','uses'=>'UserController@data']);
 			//purchase requisition
 			Route::resource('/admin/purchase-requisition','Admin\PurchaseRequisitionController',['except'=>['delete','show']]);
-			Route::post('/admin/purchase-requisition/edit','Admin\PurchaseRequisitionController@edit')->name('purchase.requisition.edit');
-
 			
 			//purchase requisition approval
 			Route::resource('/admin/purchase-requisition-approval','Admin\PurchaseRequisitionApprovalController',['except'=>['delete','show']]);
 			
-			
 			//end Aakashi
 			
 			//karishma (sales order)
-			// Route::resource('admin/salesorder', 'Admin\SalesOrderController',['except' => ['show']]);
+			Route::resource('admin/salesorder', 'Admin\SalesOrderController',['except' => ['show']]);
 			
 			Route::post('/admin/salesorder/delete','Admin\SalesOrderController@delete')->name('salesorder.delete');
 			
 			//manage stock
 			Route::get('admin/managestock', 'Admin\ManageStockController@index')->name('managestock.index');
 			Route::get('admin/managestock/generatePoResponse','Admin\ManageStockController@generatePoResponse')->name('manage_stock.generateporesponse');
-
-
 			
-
-
 			//end karishma
 			/**End Route for logout**/
 			

@@ -560,18 +560,33 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                               <div class="form-group " id="image_error_div">
-                                    <div class="col-md-12">File<sup class="text-danger">*</sup></div>
-                                    <div class="col-md-12">
-                                        <div class="inputfile-box">
-                                             <input class="inputfile" id="file" type="file" ng-file-model="salesorder.product_image" name="product_image">
+                                <div class="form-group ">
+                                     <div class="col-md-12">Upload Files <sup class="text-danger">*</sup></div>
+                                     <div class="col-md-12" id="filediv">
+                                         {{-- <div class="inputfile-box" id="product_image_error_div">
+                                              <input class="inputfile" id="file" type="file" ng-file-model="salesorder.product_image" name="product_image[]" multiple />
+                                              <label for="file" ><span class="file-box" id="file-name1"></span><span class="file-button">Browse</span></label>
+                                              <span id="product_image_error" class="help-inline text-danger">{{ $errors->first('image') }} </span>
+                                          </div> --}}
+                                          <div class="input-group control-group increment">
+                                                 <div class="control-group input-group"  style="margin-top:10px">
+                                                         <input type="file" ng-file-model="salesorder.product_image"  name="filename[]" class="form-control" multiple />
+                                                             <div class="input-group-btn"> 
+                                                             <button  class="btn btn-success" type="button" style="background-color: black;"><i class="glyphicon glyphicon-plus"></i>Browse</button>
+                                                             </div>
 
-                                             <label for="file"><span class="file-box" id="file-name"></span><span class="file-button">Browse</span></label>
-                                             <span id="product_image_error" class="help-inline text-danger"><?=$errors->first('image')?></span>
-                                         </div>
-                                    </div>
-                                </div>
-                            </div>
+                                                 </div>    
+                                           </div>
+                                         
+                                           
+                                      </div>
+                                         <br><br>
+                                          
+                                      {{-- <a id="remove"> remove </a> --}}
+                                        
+                                 </div>
+                                 <a  ng-click="addButton()" class="fa fa-plus-circle fa-small pull-left" id="addmore">  </a>
+                             </div>
                         </div>
                     </div>
                 </div>
@@ -587,10 +602,12 @@
                         <div class="col-md-6">
                             <div class="form-group" id="tax_subtotal_error_div">
                                 <div class="col-md-12">Tax On Subtotal</div>
-                                <div class="col-md-12">
-                                    <?= Form::text('tax_subtotal', old('tax_subtotal'),array('class' => 'form-control select2 number_only','id'=>'tax_subtotal','placeholder'=>'Tax On Subtotal','ng-model'=>'salesorder.tax_subtotal','ng-change'=>'updateValue()','readonly'=>true)) ?>
-                                    <span id="tax_subtotal_error" class="help-inline text-danger"><?=$errors->first('tax_subtotal')?></span>
-                                </div>
+                                <div class="col-md-12">         
+                                    <?= Form::select('taxrate',config('Constant.taxrate'),old('taxrate'),array('class' => 'form-control','placeholder'=>'Tax Rate','id'=>'taxrate','ng-model'=>'salesorder.taxrate','ng-change'=>'updateValue()')) ?>
+                                   <span id="trasport_error" class="help-inline text-danger"><?=$errors->first('trasport')?></span>
+                               <?= Form::text('tax_subtotal', old('tax_subtotal'),array('class' => 'form-control select2 number_only','id'=>'tax_subtotal','placeholder'=>'Tax On Subtotal','ng-model'=>'salesorder.tax_subtotal','ng-change'=>'updateValue()','readonly'=>true)) ?>
+                               <span id="tax_subtotal_error" class="help-inline text-danger"><?=$errors->first('tax_subtotal')?></span>
+                           </div>
                             </div>
                         </div>
                         <div class="col-md-6">

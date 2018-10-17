@@ -8,10 +8,13 @@
             },
             link: function (scope, element, attributes) {
                 element.bind("change", function (changeEvent) {
+
+					
                     var reader = new FileReader();
                     // console.log(reader);
                     reader.onload = function (loadEvent) {
                         scope.$apply(function () {
+
 
 							var image = {};
 							image.last_nameModified = changeEvent.target.files[0].last_nameModified,
@@ -21,17 +24,18 @@
 							image.type =  changeEvent.target.files[0].type,
 							image.data =  loadEvent.target.result
 
-
 							scope.ngFileModel.push(image);
-                        });
-                    }
+						});
+						
+					}
+					
 					console.log(scope.ngFileModel);
-                    reader.readAsDataURL(changeEvent.target.files[0]);
+					reader.readAsDataURL(changeEvent.target.files[0]);
+					
                 });
             }
         }
     }]);
-	
     
     angular.module('numbersOnly', [])
     .directive("numbersOnly", [function () {
@@ -65,15 +69,33 @@ var salesorderApp = angular.module('salesorderApp', ['ng-file-model','ui.bootstr
     $interpolateProvider.endSymbol('%}');
 });
 
-salesorderApp.controller('SalesOrderController', function($scope, $rootScope, $http, $uibModal, $timeout) {
+salesorderApp.controller('SalesOrderController', function($scope, $rootScope, $http, $uibModal,$compile, $timeout) {
 	
 	var soc = this;
 	soc.products = productData;
-
+	//console.log(productData);
+	
 	soc.suppliers = supplierData;
+
+	// dynamically add image boxes.
+	$scope.addButton = function() { 
+
+
+		//alert('button clicked');
+		var btnhtml = '<div class="input-group control-group increment"> <div class="control-group input-group" style="margin-top:10px"> <input type="file" ng-file-model="salesorder.product_image" name="filename[]" class="form-control" multiple /> <div class="input-group-btn"> <button class="btn btn-success" type="button" style="background-color: black;"><i class="glyphicon glyphicon-plus"></i>Browse</button> </div> </div> </div>';
+		var temp = $compile(btnhtml)($scope);
+		console.log(temp);
+		angular.element(document.getElementById('filediv')).append(temp);
+
+
+
+	 }
+	
 
 	$scope.salesorder = {};
 	$scope.salesorder = sales_order;
+	console.log( " SAles Order Details Are " + JSON.stringify(sales_order));
+
 
 
 	if (sales_order.check_billing == 1) {
@@ -97,10 +119,12 @@ salesorderApp.controller('SalesOrderController', function($scope, $rootScope, $h
 	$scope.orderTotal = sales_order.total_amount;
 	$scope.orderTotalQty = sales_order.total_qty;
 	$scope.orderTaxTotal = sales_order.total_tax_amount;
-	//$scope.getTheFiles = '';
 	$scope.salesorder.product_image = [];
 	$scope.add_select = 0;
 	$scope.sales_order_data = sales_order_data;
+
+
+	console.log( " SAles Order Data Are " + JSON.stringify(sales_order_data));
 	$scope.order_item_pdf = order_item_pdf;
 	$scope.hsn_codes = hsn_codes;
 	try{
@@ -389,6 +413,8 @@ salesorderApp.controller('SalesOrderController', function($scope, $rootScope, $h
 					scope : $scope,
 					resolve: {
 						items: function () {
+
+							console.log($scope.selectedSupplierForMulti);
 							return $scope.selectedSupplierForMulti;
 						}
 					}
@@ -455,6 +481,7 @@ salesorderApp.controller('SalesOrderController', function($scope, $rootScope, $h
 			resolve: {
 				items: function () {
 
+					console.log($scope.sales_order_data);
 					return $scope.sales_order_data;
 				}
 			}
@@ -484,24 +511,27 @@ salesorderApp.controller('SalesOrderController', function($scope, $rootScope, $h
         }).success(function(response) {
 
 			console.log(response);
-			toastr.success(msg);
         	$('#loader').hide();
-            // if (response.redirect != 'back') {
-               
-            // 	setTimeout(function() {
-            // 		location.href = response.redirect;
-            //     },1000);
+            if (response.redirect != 'back') {
+                toastr.success(msg);
+            	setTimeout(function() {
+            		location.href = response.redirect;
+                },1000);
             	
-            // }else{
-            //     toastr.success(msg);
-            // 	setTimeout(function() {
-            // 		location.reload();
-            //     },1000);
-            // }
+            }else{
+                toastr.success(msg);
+            	setTimeout(function() {
+            		location.reload();
+                },1000);
+            }
         }).error(function(error_response){
+
+
 			console.log(error_response);
-        	$('#loader').hide();
-        	toastr.error('There Were some errors');
+			$('#loader').hide();
+			// ignoring Swift Response - Unable to Open Array of files error.
+			// As it is server log error and doesnt affect the application.
+			toastr.error('There were some errors');
             $.each(error_response.errors,function(k,v){
             	$('#'+k+'_error').text(v);
                 $('#'+k+'_error_div').addClass('has-error');
@@ -523,6 +553,8 @@ salesorderApp.controller('SalesOrderController', function($scope, $rootScope, $h
             },
             data : form_data
         }).success(function(response) {
+
+			console.log("response is " +response);
         	$scope.view_data = response;
         	//open modal which tempateurl is salesorderHtml
 			$rootScope.modalInstance = $uibModal.open({

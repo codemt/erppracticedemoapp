@@ -7,6 +7,8 @@
     <?=Form::model($update_purchase_requisition_approval_data,['method' => 'PATCH', 'route'=>['purchase-requisition-approval.update',$id], 'class' => 'm-0 form-horizontal'])?>
 @stop
 @section('top_fixed_content')
+<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+<script>tinymce.init({ selector:'textarea' });</script>
 <nav class="navbar navbar-static-top">
     <div class="title">
          <h4></h4>
@@ -14,22 +16,18 @@
     <div class="pl-10">
         <button type="button"class="btn btn-primary btn-sm disabled-btn" title="Generate PO & View" onclick="generatePoModel()">Generate PO & View </button>
         <button type="submit" name="approve" value="approve" class="btn btn-primary btn-sm disabled-btn" title="Generate PO & Send">Generate PO & Send </button>
-        <button type="submit" name="reorder"  id="reorder" value="{{ $id }}" class="btn btn-primary btn-sm disabled-btn" title="Re Order PO & Send">Re Order </button>
         <!-- <button type="submit" name="approve" value="approve_mail" class="btn btn-primary btn-sm disabled-btn" title="Approve & Send Email">Approve & Email</button> -->
         @if($update_purchase_requisition_approval_data['purchase_approval_status'] != 'onhold')
             <button type="submit" name="approve" value="onhold" class="btn btn-primary btn-sm disabled-btn" title="Hold On Order">On Hold</button>
         @endif
-        <button type="submit" name="approve" value="cancel" class="btn btn-primary btn-sm disabled-btn" title="Back to users Page">Cancel</button>
-        @if(App\Helpers\DesignationPermissionCheck::isPermitted('approval.delete'))
+        @if(App\Helpers\DesignationPermissionCheck::isPermitted('purchase-requisition-approval.delete'))
         {{-- <input type="hidden" name="id" value="{{ $id }}" id="hidden_id"> --}}
-        <button type="submit" name="pending" id="delete" value="{{ $id }} "class="btn btn-primary btn-sm disabled-btn" title="Hold On Order">Delete</button>
+        <button type="submit" name="pending" id="delete" value="{{ $id }}"class="btn btn-primary btn-sm disabled-btn" title="Hold On Order">Delete</button>
         @endif
+        
+        <a href="<?= route('purchase-requisition-approval.index')?>" class="btn btn-default btn-sm" title="Back to users Page">Cancel</a>
     </div>
 </nav>
-{{-- <form action="{{ route('approval.delete') }}" method="post"> 
-        <input type="hidden" name="id" value="{{ $id }}" id="hidden_id">
-        <button type="submit" name="approve" value="delete" class="btn btn-primary btn-sm disabled-btn" title="Back to users Page">Delete</button>
-</form> --}}
 @stop
 @section('content')
 <div class="row">
@@ -48,7 +46,7 @@
                                     <div class="form-group @if($errors->has('company_id')) has-error @endif">
                                         <div class="col-md-12">Company Name</div>
                                         <div class="col-md-12">
-                                            <?= Form::text('company_id',$company_name['company_name'],array('class' => 'form-control select_2 select company','placeholder'=>'Company Name','id'=>'company_name')) ?>
+                                            <?= Form::text('company_id',$company_name['company_name'],array('class' => 'form-control select_2 select company','placeholder'=>'Company Name')) ?>
                                             <span id="select_2_error" class="help-inline text-danger"><?=$errors->first('company_id')?></span>
                                         </div>
                                     </div>
@@ -70,7 +68,7 @@
                                     <div class="form-group @if($errors->has('delivery_terms')) has-error @endif">
                                         <div class="col-md-12">Delivery Terms</div>
                                         <div class="col-md-12">
-                                            <?= Form::text('delivery_terms',old('delivery_terms'),array('class' => 'form-control delivery_terms','placeholder'=>'Delivey Terms','id'=>"delivery_terms")) ?>
+                                            <?= Form::text('delivery_terms',old('delivery_terms'),array('class' => 'form-control delivery_terms','placeholder'=>'Delivey Terms')) ?>
                                             <span id="select_2_error" class="help-inline text-danger"><?=$errors->first('delivery_terms')?></span>
                                         </div>
                                     </div>
@@ -94,7 +92,7 @@
                                         <div class="col-md-12">
                                             <div class="animated-radio-button pull-left mr-10">
                                                 <label class="control-label" for="is_active_true">
-                                                    <input type="radio" id="currency_status" name="currency_status" value="rupee" {{old('currency_status',$update_purchase_requisition_approval_data['currency_status']) == 'rupee' ? 'checked' : 'disabled'}} id="is_active_true" checked="checked" class="cur_status">
+                                                    <input type="radio" name="currency_status" value="rupee" {{old('currency_status',$update_purchase_requisition_approval_data['currency_status']) == 'rupee' ? 'checked' : 'disabled'}} id="is_active_true" checked="checked" class="cur_status">
                                                     <span class="label-text"></span> Rupee
                                                 </label>
                                             </div>
@@ -125,7 +123,7 @@
                     <div class="form-group @if($errors->has('distributor_id')) has-error @endif">
                         <div class="col-md-12">Distributor Name</div>
                         <div class="col-md-12">
-                            <?= Form::text('distributor_id',$distributor_name['distributor_name'],array('class' => 'form-control select_2 select distributor','placeholder'=>'Distributor Name','id'=>'distributor_name')) ?>
+                            <?= Form::text('distributor_id',$distributor_name['distributor_name'],array('class' => 'form-control select_2 select distributor','placeholder'=>'Distributor Name')) ?>
                             <span id="select_2_error" class="help-inline text-danger"><?=$errors->first('distributor_id')?></span>
                         </div>
                     </div>
@@ -317,8 +315,7 @@
 </div>
 <div class="text-right">
         <button type="button"class="btn btn-primary btn-sm disabled-btn" title="Generate PO & View" onclick="generatePoModel()">Generate PO & View </button>
-        <button type="submit" name="approve" value="approve"  class="btn btn-primary btn-sm disabled-btn" title="Generate PO & Send">Generate PO & Send </button>
-        <button type="submit" name="reorder" value="reorder" class="btn btn-primary btn-sm disabled-btn" title="Re Order PO & Send">Re Order </button>
+        <button type="submit" name="approve" value="approve" class="btn btn-primary btn-sm disabled-btn" title="Generate PO & Send">Generate PO & Send </button>
         <!-- <button type="submit" name="approve" value="approve_mail" class="btn btn-primary btn-sm disabled-btn" title="Approve & Send Email">Approve & Email</button> -->
         @if($update_purchase_requisition_approval_data['purchase_approval_status'] != 'onhold')
             <button type="submit" name="approve" value="onhold" class="btn btn-primary btn-sm disabled-btn" title="Hold On Order">On Hold</button>
@@ -338,7 +335,6 @@
                 <div id="modal-po-info"></div>
             </div>
             <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Send</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           </div>
         </div>
@@ -372,102 +368,10 @@
         var list = $('tbody tr');
             ajaxCall();
 
-           var comp_name =  $('#company_name').val();
-          var manufacturer_name = $('#supplier').val();
-          var delivery_terms = $('#delivery_terms').val();
-        //   console.log(comp_name,manufacturer_name,delivery_terms);
-
     $.each(list,function(k,v){
             if($('#total_price'+k).val() == '0.00'){
                 $('#unit_price'+k).val('');
             }
-        });
-
-        $('#reorder').click(function(e){
-
-                e.preventDefault();
-                var reorderId = $('#reorder').val();
-                console.log("Re Order ID " +reorderId);
-                var company_id = $('#company_name').val();
-                var supplier = $('#supplier').val();
-                var distributor_name = $('#distributor_name').val();
-                var delivery_terms = $('#delivery_terms').val();
-                var currency = $('#currency_status').val();
-                var model_no = $('#shipping .model_no').val();
-                var product_name = $('#shipping .product_name').val();
-               
-                var qty = $('#shipping .qty').val();
-                console.log("Company Name is " +company_id);
-                console.log('supplier is ' +supplier);
-                console.log('Delivery Terms ' +delivery_terms);
-                console.log('currency is ' +currency);
-                console.log('Distributor Name is ' +distributor_name);
-                console.log(company_id,supplier,delivery_terms,currency,distributor_name);
-                console.log("Product Name is  " +product_name);
-                console.log("Quantity Ordered is " +qty);
-                console.log("Model No. is " +model_no);
-
-                var shipping = {};
-                var order = {};
-                var model_object = {
-
-                        "model_no": model_no,
-
-                }
-                var final = {
-
-                        "model_no":model_no,
-                        "product_name":product_name,
-                        "qty":qty
-
-                }
-                
-                shipping = Object.assign({
-                        "shipping": final,
-                        "save_new":'save_new'
-
-                });
-
-                $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                        }
-                 });
-                $.ajax({
-               url: "{{ url('/admin/purchase-requisition/create') }}",
-               type: 'post',
-               datatype: 'JSON',
-                data: {
-                        'company_id': company_id,
-                        'supplier_id':supplier,
-                        'distributor_id':distributor_name,
-                        'delivery_terms':delivery_terms,
-                        'currency_status':currency,
-                        'shipping': shipping
-                
-                 },
-               success: function(result){
-
-
-                   var final = JSON.stringify(result);
-                   console.log(final);
-                 toastr.success('Record Given for Re Order');
-                window.location.href = '{{ url("/admin/purchase-requisition-approval/index") }}'; 
-                //   $('.alert').show();
-                //   $('.alert').html(result.success);
-               },
-               error: function (data) {
-                  console.log('Error:', data);
-                  window.location.href = '{{ url("/admin/purchase-requisition-approval/index") }}';
-                  
-                 }
-             });
-             
-             
-
-             
-
-
         });
 
         $('#delete').click(function(e){
@@ -490,27 +394,15 @@
                 data: {'id': pendingId },
                success: function(result){
 
-
+                  // alert('result');
                    var final = JSON.stringify(result);
                    console.log(final);
-                   if(result == 'Not Allowed'){
-
-                        //   toastr.error('Not Allowed');
-                        window.location.href = '{{ route("access.denied") }}'; 
-
-
-                }
-                else
-                {
-
-                    toastr.success('Record Given for Deletion');
-                    window.location.href = '{{ url("/admin/purchase-requisition-approval/index") }}'; 
-
-                }
-                
+                 toastr.success('Record Given for Deletion');
+                window.location.href = '{{ url("/admin/purchase-requisition-approval") }}'; 
+                //   $('.alert').show();
+                //   $('.alert').html(result.success);
                },
                error: function (data) {
-
                   console.log('Error:', data);
                   
                  }
@@ -519,13 +411,7 @@
 
 
      });
-
-
-
-
     });
-
-
 
     function btnAdd(){
         $(this).delay(10).queue(function() {
@@ -567,15 +453,11 @@
                         '_token' : token
                     },
                     success : function(data){
-                         console.log(data);
+                        // console.log(data);
                         $.each(data,function(i,o){
                             // toappend +='<option>'+o+'</option>';
                             $("#product_name"+k).val(data.name_description);
                         });
-                    },
-                    error : function(data){
-
-                        console.log(data);
                     }
                 })
             });
@@ -658,10 +540,6 @@
             success : function(data){
                 $('#payment_suggetion').show();
                 $('#payment_suggetion').html(data);
-            },
-            error : function(data){
-
-                console.log(data);
             }
         });
     });
@@ -730,7 +608,6 @@
                 $('.export_button').css('cursor','not-allowed');
                 $('.export_link').removeAttr('href').css('cursor','not-allowed');
                 $('.export_link').removeAttr('href').css('text-decoration','inherit');
-
             }else{
                 $('.export_button').css('cursor','pointer');
                 $('.export_link').attr('href','<?= route('purchase.requisition-approval.exportPrItem',$id)?>').css('cursor','pointer');
@@ -739,7 +616,6 @@
             }
         });
         function chnage_total_price(){
-
             var hidden_value = $('.hidden_total_price').val();
             var value = hidden_value.split(' ');
             var previous_total_price = $(v).find("#total_price"+k).val();
@@ -785,7 +661,7 @@
                         '_token' : token
                     } ,
                     success : function(data){
-                      window.location.reload();
+                        window.location.reload();
                     }
                 }); 
             }
@@ -863,11 +739,6 @@
                         $('#modal-po-info').html(resp);
                     });
                 }
-            },
-            error : function(data){
-
-
-                    console.log("Error is " +data);
             }
         });
     }

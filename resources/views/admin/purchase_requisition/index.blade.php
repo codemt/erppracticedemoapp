@@ -22,7 +22,6 @@
         @if(App\Helpers\DesignationPermissionCheck::isPermitted('purchase-requisition.create'))
             <a href="<?= route('purchase-requisition.create') ?>" class="btn btn-primary btn-sm" title="Add New">Add Purchase Requisition</a>
         @endif
-        {{-- <a href="{{ route('purchase.requisition.reorder') }}" class="btn btn-primary btn-sm" title="Add New">Re Order Purchase Requisition</a> --}}
         <a href="<?= route('purchase.requisition.export')?>" class="btn btn-default btn-sm" title="Export to CSV">Export</a>
     </div>          
 </nav>
@@ -44,7 +43,7 @@
                                 <div class="bulk-box">
                                     <div class="bulk-tooltip"></div>
                                     <ul class="bulk-list">
-                                        <li><a href="javascript:void(0);" id="re_order" class="delete-btn">Re Order selected record</a></li>
+                                        <li><a href="javascript:void(0);" id="delete" class="delete-btn">Delete selected record</a></li>
                                     </ul>
                                 </div>
                             </li>
@@ -71,8 +70,8 @@
                             <th>Total Price in USD</th>
                             <th>Purchase Approval Status</th>
                             <th>Po No</th>
-                            @if(App\Helpers\DesignationPermissionCheck::isPermitted('purchase.get'))
-                            <th> Re Order </th>
+                            @if(App\Helpers\DesignationPermissionCheck::isPermitted('reorder.create'))
+                            <th> ReOrder </th>
                             @endif
                         </tr>
                     </thead>
@@ -103,20 +102,9 @@
     var token = "<?= csrf_token() ?>";  
 
     $(function(){
-
         $('#delete').click(function(){
             var delete_id = $('#'+table+' tbody .checkbox:checked');
             checkLength(delete_id);
-        });
-
-         $('#re_order').click(function(){
-
-
-                var reorder_id = $('#'+table+' tbody .checkbox:checked');
-               // var final = JSON.stringify(reorder_id);
-                alert(reorder_id);
-                
-
         });
 
         $('#purchase_requisition_table').DataTable({
@@ -145,7 +133,7 @@
                 sWidth:"2%",
                 sClass:"text-center",
                 mRender: function (v, t, o) {
-                    return '<div class="animated-checkbox"><label class="m-0"><input class="checkbox" type="checkbox" id="chk_'+v+'" name="special_id['+v+']" value="Hello" /><span class="label-text"></span></label></div>';
+                    return '<div class="animated-checkbox"><label class="m-0"><input class="checkbox" type="checkbox" id="chk_'+v+'" name="special_id['+v+']" value="'+v+'"/><span class="label-text"></span></label></div>';
                 },
             },
             {   mData:"company_name",sWidth:"15%",bSortable : true,
@@ -193,51 +181,25 @@
             },
             { mData:"po_no",bSortable : true,sClass : 'text-center',sWidth:"15%",
             },
-            @if(App\Helpers\DesignationPermissionCheck::isPermitted('purchase.get'))
+            @if(App\Helpers\DesignationPermissionCheck::isPermitted('reorder.create'))
             {
                     mData: 'null',
                     bSortable: false,
                     sWidth: "18px",
                     sClass: "text-center",
                     mRender: function(v, t, o) {
-
-                        if(v == undefined){
-                            v = "NA";
-                        }
-                        
-                        var is_check = "<?= App\Helpers\DesignationPermissionCheck::isPermitted('purchase.get') ?>";
-                        if(is_check != 0){ 
-
-                                var id= o['id'];
-                        var reorder_path = "<?=URL::route('purchase.get', ['id' => ':id'])?>";
+                        var id= o['id'];
+                        var reorder_path = "<?=URL::route('reorder.create', ['id' => ':id'])?>";
                         reorder_path = reorder_path.replace(':id',o['id']);
                         var act_html = "<div class='btn-group'>"
                             +"<a href='"+reorder_path+"' data-toggle='tooltip' title='Reorder' data-placement='top' class='btn btn-xs btn-info p-5' style='font-size:17px; line-height:23px; padding: 4px'><i class='fa fa-fw fa-copy'></i></a>"
                             +"</div>";
-                        }
-                        else{
-                            
-                            var id= o['id'];
-                            var reorder_path = "<?=URL::route('access.denied')?>";
-                            reorder_path = reorder_path.replace(':id',o['id']);
-                            var act_html = "<div class='btn-group'>"
-                            +"<a href='"+reorder_path+"' data-toggle='tooltip' title='Reorder' data-placement='top' class='btn btn-xs btn-info p-5' style='font-size:17px; line-height:23px; padding: 4px'><i class='fa fa-fw fa-copy'></i></a>"
-                            +"</div>";
-
-
-                        }
-
-                        // var id= o['id'];
-                        // var reorder_path = "<?=URL::route('purchase.get', ['id' => ':id'])?>";
-                        // reorder_path = reorder_path.replace(':id',o['id']);
-                        // var act_html = "<div class='btn-group'>"
-                        //     +"<a href='"+reorder_path+"' data-toggle='tooltip' title='Reorder' data-placement='top' class='btn btn-xs btn-info p-5' style='font-size:17px; line-height:23px; padding: 4px'><i class='fa fa-fw fa-copy'></i></a>"
-                        //     +"</div>";
                         return act_html;
                     },
-                },
-                @endif
-            ],
+            }, 
+            @endif
+            
+        ],
             fnPreDrawCallback : function() { $("div.overlay").css('display','flex'); },
             fnDrawCallback : function (oSettings) {
                 $("div.overlay").hide();

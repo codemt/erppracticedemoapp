@@ -955,16 +955,31 @@
                                 </div>
                                 <div class="col-md-4">
                                    <div class="form-group ">
-                                        <div class="col-md-12">File<sup class="text-danger">*</sup></div>
-                                        <div class="col-md-12">
-                                            <div class="inputfile-box" id="product_image_error_div">
-                                               
-                                                 <input type="file"  multiple ng-file-model="salesorder.product_image" name="product_image[]"  />
-                                                 <label for="file"><span class="file-box" id="file-name"></span><span class="file-button">Browse</span></label>
-                                                 <span id="product_image_error" class="help-inline text-danger"><?=$errors->first('image')?></span>
-                                             </div>
-                                        </div>
+                                        <div class="col-md-12">Upload Files <sup class="text-danger">*</sup></div>
+                                        <div class="col-md-12" id="filediv">
+                                            {{-- <div class="inputfile-box" id="product_image_error_div">
+                                                 <input class="inputfile" id="file" type="file" ng-file-model="salesorder.product_image" name="product_image[]" multiple />
+                                                 <label for="file" ><span class="file-box" id="file-name1"></span><span class="file-button">Browse</span></label>
+                                                 <span id="product_image_error" class="help-inline text-danger">{{ $errors->first('image') }} </span>
+                                             </div> --}}
+                                             <div class="input-group control-group increment">
+                                                    <div class="control-group input-group"  style="margin-top:10px">
+                                                            <input type="file" ng-file-model="salesorder.product_image"  name="filename[]" class="form-control" multiple />
+                                                                <div class="input-group-btn"> 
+                                                                <button  class="btn btn-success" type="button" style="background-color: black;"><i class="glyphicon glyphicon-plus"></i>Browse</button>
+                                                                </div>
+
+                                                    </div>    
+                                              </div>
+                                            
+                                              
+                                         </div>
+                                            <br><br>
+                                             
+                                         {{-- <a id="remove"> remove </a> --}}
+                                           
                                     </div>
+                                    <a  ng-click="addButton()" class="fa fa-plus-circle fa-small pull-left" id="addmore">  </a>
                                 </div>
                             </div>
                         </div>
@@ -1073,7 +1088,30 @@
         var state_id = '';
         var city_id = '';
 
+
+        var abc = 0;
+
         $(document).ready(function(){
+
+
+            
+            // $("#addmore").click(function(){ 
+
+            //         var html = $(".increment").html();
+            //         $("#filediv").append(html);
+            //        // $compile($(".increment").html())(scope)
+
+            // });
+
+            // $("#remove").click(function(){ 
+            //     //alert('hey');
+            //      $("#files").remove();
+            //  });
+
+             
+            
+
+
             $(".number_only").keypress(function(h){
                 console.log($(this));
                 if(h.which!=8&&h.which!=0&&(h.which!=46 || $(this).val().indexOf('.') != -1)&&(h.which<48||h.which>57))return!1
@@ -1377,8 +1415,13 @@
             // getProducts($(this).val());
         });
         $('#file').change(function(){
-            $('#file-name').text($(this)[0].files[0].name);
+
+            var file1 = $(this)[0].files[0].name;
+            $('#file-name1').text(file1);
+            $('#file-name2').text(file1);
+            
         });
+        
     </script>
     <?= Html::script('backend/js/app.js',[],IS_SECURE) ?>
 @stop
