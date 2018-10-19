@@ -27,6 +27,8 @@ class AdminLoginController extends Controller
      *
      * @var string
      */
+    
+    
     protected $redirectTo = '/admin/dashboard';
 
     /**
@@ -36,6 +38,7 @@ class AdminLoginController extends Controller
      */
     public function __construct()
     {
+        
         $this->middleware('guest:admin')->except('logout');
     }
 

@@ -173,6 +173,16 @@ Route::group(array('middleware' => ['admin_guest']), function () {
 		
 		//cities
 		Route::get('/admin/cities/export','Admin\CityController@export')->name('cities.export');
+
+
+		// API Routes.
+
+		Route::resource('api/salesorders','Api\SOController');
+		Route::post('api/salesorders/update','Api\SOController@update');
+	//	Route::get('admin/login', 'Admin\Auth\AdminLoginController@showLoginForm')->name('admin.login');
+
+
+
 		
 		Route::group(array('middleware' => ['acl.permitted']), function () {
 			// MANUFACTURER MASTER //
