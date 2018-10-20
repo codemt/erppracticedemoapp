@@ -609,8 +609,10 @@ class SalesOrderController extends Controller
     public function approvalUpdate(SalesOrderRequest $request){
         
         $sales_data = $request->all();
+
+        $taxrate = $request->taxrate;
        // print_r($sales_data);
-       // exit();
+        //exit();
         $sales_data['user'] = auth()->guard('admin')->user();
        // print_r($sales_data['id']);
        // exit();

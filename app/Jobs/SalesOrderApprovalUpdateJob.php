@@ -38,6 +38,10 @@ class SalesOrderApprovalUpdateJob
     public function handle(Request $request)
     {
         $salesorder_data = $this->salesorder_data;
+
+        $taxrate = $salesorder_data['taxrate'];
+       // print_r($taxrate);
+       // exit();
         unset($salesorder_data['value']);
         $id = $salesorder_data['id'];
 
@@ -79,7 +83,7 @@ class SalesOrderApprovalUpdateJob
         $save_detail['cityid'] = $salesorder_data['cityid'];
         $save_detail['pin_code'] = $salesorder_data['pin_code'];
         $save_detail['countryid'] = $salesorder_data['countryid'];
-        
+        $save_detail['taxrate'] = $taxrate;        
         // print_r($save_detail);
         // exit();
         // dd($sales_order_item);

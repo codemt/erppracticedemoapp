@@ -22,18 +22,20 @@ class SORequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Request $request) {
-        $data = $request->all();
-        //print_r($data);
-        // exit();
+    public function rules(Request $request){
 
-        for($i=0;$i<=$data.length;$i++){
+
+        $data = $request->all();
+       // print_r($data);
+       // exit();
+
+ 
 
             switch ($this->method()) {
                 case 'POST':
                     {
                         $rules = [
-                            'po_no'             =>   'required',
+                            'data.*.po_no'             =>   'required',
                             // 'po_no'             =>   'required',
                             'order_date'        =>   'required',
                             'customer_id'        =>   'required',
@@ -91,41 +93,41 @@ class SORequest extends FormRequest
                 case 'PATCH':
                     {
                         $rules = [
-                            'po_no'             =>   'required',
-                            'order_date'        =>   'required',
-                            'customer_id'        =>   'required',
-                            'billing_title'   =>   'required',
-                            'customer_contact_name'      =>   'required',
-                            'customer_contact_email'     =>   'required|email',
-                            'customer_contact_no'        =>   'required|min:0|max:10|regex:'.config('regex.product.contact_no'),
-                            'contact_name'      =>   'required',
-                            'contact_email'     =>   'required|email',
-                            'contact_no'        =>   'required',
-                            'company_id'        =>   'required',
-                            'payment_terms'     =>   'required',
-                            'delivery'          =>    'required',
-                            'advanced_received' =>    'required|regex:'.config('regex.product.price'),
-                            'part_shipment'     =>    'required',
-                            'trasport'     =>    'required',
-                            'pkg_fwd'     =>    'required|regex:'.config('regex.product.price'),
-                            'reason_for_other_expense'     =>    'required_with:other_expense',
-                            'fright'     =>    'required|regex:'.config('regex.product.price'),
-                            'tax_subtotal'     =>    'required|regex:'.config('regex.product.price'),
+                            'sales_order_data.po_no'             =>   'required',
+                            'sales_order_data.order_date'        =>   'required',
+                            'sales_order_data.customer_id'        =>   'required',
+                            'sales_order_data.billing_title'   =>   'required',
+                            'sales_order_data.customer_contact_name'      =>   'required',
+                            'sales_order_data.customer_contact_email'     =>   'required|email',
+                            'sales_order_data.customer_contact_no'        =>   'required|min:0|max:10|regex:'.config('regex.product.contact_no'),
+                            'sales_order_data.contact_name'      =>   'required',
+                            'sales_order_data.contact_email'     =>   'required|email',
+                            'sales_order_data.contact_no'        =>   'required',
+                            'sales_order_data.company_id'        =>   'required',
+                            'sales_order_data.payment_terms'     =>   'required',
+                            'sales_order_data.delivery'          =>    'required',
+                            'sales_order_data.advanced_received' =>    'required|regex:'.config('regex.product.price'),
+                            'sales_order_data.part_shipment'     =>    'required',
+                            'sales_order_data.trasport'     =>    'required',
+                            'sales_order_data.pkg_fwd'     =>    'required|regex:'.config('regex.product.price'),
+                            'sales_order_data.reason_for_other_expense'     =>    'required_with:other_expense',
+                            'sales_order_data.fright'     =>    'required|regex:'.config('regex.product.price'),
+                            'sales_order_data.tax_subtotal'     =>    'required|regex:'.config('regex.product.price'),
                         ];
-                        if(isset($data['check_billing'])){
-                            if($data['check_billing'] == false){
-                                $rules['shipping_address'] =   'required';
-                                $rules['countryid']        =   'required';
-                                $rules['pin_code']          =   'required';
-                                $rules['stateid']          =   'required';
-                                $rules['cityid']           =   'required';
+                        if(isset($data['sales_order_data.check_billing'])){
+                            if($data['sales_order_data.check_billing'] == false){
+                                $rules['sales_order_data.shipping_address'] =   'required';
+                                $rules['sales_order_data.countryid']        =   'required';
+                                $rules['sales_order_data.pin_code']          =   'required';
+                                $rules['sales_order_data.stateid']          =   'required';
+                                $rules['sales_order_data.cityid']           =   'required';
                             }
                         }else{
-                            $rules['shipping_address'] =   'required';
-                            $rules['countryid']        =   'required';
-                            $rules['pin_code']          =   'required';
-                            $rules['stateid']          =   'required';
-                            $rules['cityid']           =   'required';
+                            $rules['sales_order_data.shipping_address'] =   'required';
+                            $rules['sales_order_data.countryid']        =   'required';
+                            $rules['sales_order_data.pin_code']          =   'required';
+                            $rules['sales_order_data.stateid']          =   'required';
+                            $rules['sales_order_data.cityid']           =   'required';
                         } 
                         $arr  = ['image/png','image/jpeg','application/pdf','application/docx'];
                         
@@ -148,7 +150,7 @@ class SORequest extends FormRequest
 
 
 
-        }
+        
     
     }
 

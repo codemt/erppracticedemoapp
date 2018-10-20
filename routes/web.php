@@ -179,6 +179,8 @@ Route::group(array('middleware' => ['admin_guest']), function () {
 
 		Route::resource('api/salesorders','Api\SOController');
 		Route::post('api/salesorders/update','Api\SOController@update');
+
+		
 	//	Route::get('admin/login', 'Admin\Auth\AdminLoginController@showLoginForm')->name('admin.login');
 
 

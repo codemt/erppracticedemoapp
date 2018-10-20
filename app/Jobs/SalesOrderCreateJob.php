@@ -34,6 +34,8 @@ class SalesOrderCreateJob
     {
         $salesorder_data = $this->salesorder_data; 
 
+        $taxrate = $salesorder_data['taxrate'];
+
         $finalorder = json_decode(json_encode($salesorder_data),true);
         unset($salesorder_data['id']);
        // return print_r($finalorder[0]['check_billing']);
@@ -174,6 +176,10 @@ class SalesOrderCreateJob
         $save_detail['billing_title'] = $billing['title'];
         $save_detail['billing_address'] = $billing['address'];
         $save_detail['billing_id'] = $billing_id;
+        
+
+        // tax rate
+        $save_detail['taxrate'] = $taxrate; 
 
         $user_id = $salesorder_data['user'];
         if($user_id['team_id'] == config('Constant.superadmin')){
