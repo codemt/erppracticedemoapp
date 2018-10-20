@@ -283,7 +283,7 @@ class SOController extends Controller
 
               
     
-            return response()->json(['sales_order_data' => $sales_order_data,'sales_order_items'=> $sales_order_item]);
+            return response()->json(['sales_order_data' => $sales_order_data,'sales_order_items'=> $sales_order_item_pdf]);
          //   return response()->json(['success' => $product_data], $this->successStatus);
 
 
@@ -326,12 +326,8 @@ class SOController extends Controller
 
 
         $updateId = $OrderDetails['id'];
-
-       // $updateItems_id = $updateOrder_items['id'];
-       // return $updateId;
-
-        
-        
+       // $this->updateItems($updateOrder_items);
+    
         $updateOrder = SalesOrder::find($updateId);
 
        // $updateOrderItems = SalesOrder::find($updateItems_id);
@@ -393,11 +389,57 @@ class SOController extends Controller
 
        $updateOrder->save();
 
+       
+                  
+       print_r($updateOrder_items);
+       
+       foreach($updateOrder_items as $updateOrder_items){
+
+        $updateItems = SalesOrderItem::find($updateOrder_items['id']);
+
+
+            $updateItems->sales_order_id = $updateOrder_items['sales_order_id'];
+            $updateItems->product_id = $updateOrder_items['product_id'];
+            $updateItems->supplier_id = $updateOrder_items['supplier_id'];
+            $updateItems->model_no = $updateOrder_items['model_no'];
+            $updateItems->qty = $updateOrder_items['qty'];
+            $updateItems->unit_value = $updateOrder_items['unit_value'];
+            $updateItems->total_value = $updateOrder_items['total_value'];
+            $updateItems->list_price = $updateOrder_items['list_price'];
+            $updateItems->manu_clearance = $updateOrder_items['manu_clearance'];
+            $updateItems->discount_applied = $updateOrder_items['discount_applied'];
+            $updateItems->tax_value = $updateOrder_items['tax_value'];
+            $updateItems->created_by = $updateOrder_items['created_by'];
+            $updateItems->updated_by = $updateOrder_items['updated_by'];
+
+            $updateItems->save();
+
+
+        // print_r($updateItems);
+        // exit();
+
+       }
+     
+
+
+    //  print_r($updateItems);
+
+     
+
+     
+
+        
+
        return response()->json(['success' => $updateOrder], $this->successStatus);
-        // $abc = 123;
         
-        
-        // return $abc;
+
+    }
+
+    public function updateItems($items){
+
+
+            print_r($items);
+
 
     }
 
