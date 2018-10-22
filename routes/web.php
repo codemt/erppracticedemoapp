@@ -188,6 +188,10 @@ Route::group(array('middleware' => ['admin_guest']), function () {
 		// Customers API Routes
 		Route::resource('api/customers','Api\CustomerController');
 
+
+		//Supplier API Routes
+		Route::resource('api/suppliers','Api\SupplierController');
+
 		
 	//	Route::get('admin/login', 'Admin\Auth\AdminLoginController@showLoginForm')->name('admin.login');
 
