@@ -36,6 +36,10 @@ class UpdatePurchaseRequisitionJob
     public function handle(Request $request)
     {
         $update_purchase_requisition_data = $this->update_purchase_requisition_data;
+
+
+        dd($update_purchase_requisition_data);
+        exit();
         $id = $update_purchase_requisition_data['update_purchase_requisition_datas']['id'];
         $product_requisition_data_save = PurchaseRequisition::firstorNew(['id'=>$id]);
         $product_requisition_data_save->fill($update_purchase_requisition_data['update_purchase_requisition_datas']);
@@ -73,6 +77,12 @@ class UpdatePurchaseRequisitionJob
         $product_requisition_data_save->updated_at = Carbon::now();
         $product_requisition_data_details = PurchaseRequisitionDetails::where('purchase_requisition_id',$product_requisition_data_save->id)->delete();
         $all_details = $request->input('shipping.shipping');
+        //dd($all_details);
+       // exit(); 
+        // return $all_details;
+        // exit();
+
+
         $total_price = 0;
         //save in pr detail
         foreach ($all_details as $key => $single_detail) {

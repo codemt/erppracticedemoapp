@@ -67,6 +67,255 @@ class SOController extends Controller
     public function store(Request $request)
     {
         //
+
+       
+        $sales_data = $request->all();
+
+        // return $sales_data;
+        // exit();
+        // dd($sales_data);
+        $sales_data['sales_order_data']['user'] = auth()->guard('admin')->user();
+
+        $salesorder_data = $sales_data;
+
+        $taxrate = $salesorder_data['sales_order_data']['taxrate'];
+
+        $finalorder = json_decode(json_encode($salesorder_data),true);
+        unset($salesorder_data['sales_order_data']['id']);
+       // return print_r($finalorder[0]['check_billing']);
+        //generate SO No At time of store
+
+        $user_id = $salesorder_data['sales_order_data']['user']['id'];
+        $user_data = Admin::select('admins.id as adminid','admins.status as admin_status','admins.region as zone')->where('admins.status','approve')->where('admins.id',$user_id)->first();
+
+        $zone = explode(' ',$user_data['zone']);
+
+            //   return print_r($salesorder_data['po_no']);
+        $zone = $zone[0];
+        $zone_char = '';
+        $sono = '';
+        if($zone == "NA"){
+            $so_no = SalesOrder::select('so_no')->where('so_no','LIKE',"NA%")->orderBy('so_no','desc')->first();
+            $zone_char = ucfirst(substr($so_no['so_no'], 0,2));
+            if($so_no == null){
+                $zone_char = $zone;
+            }else{
+                $zone_char = ucfirst(substr($so_no['so_no'], 0,2));
+            }
+            $so_no = substr($so_no['so_no'], 2) + 1;
+            $lenstr = strlen($so_no);
+            if($lenstr == 1){
+                $sono = $zone_char .'00' . $so_no;
+            }elseif($lenstr == '2'){
+                $sono = $zone_char .'0' . $so_no;
+            }else{
+                $sono = $zone_char .$so_no;
+            }
+            
+        }elseif($zone == "OEM"){
+            $so_no = SalesOrder::select('so_no')->where('so_no','LIKE',"OEM%")->orderBy('so_no','desc')->first();
+
+            $zone_char = ucfirst(substr($so_no['so_no'], 0,3));
+            if($so_no == null){
+                $sono = 'OEM400';
+            }else{
+                $zone_char = ucfirst(substr($so_no['so_no'], 0,3));
+                $so_no = substr($so_no['so_no'], 3) + 1;
+                $lenstr = strlen($so_no);
+                if($lenstr == 1){
+                    $sono = $zone_char .'00' . $so_no;
+                }elseif($lenstr == '2'){
+                    $sono = $zone_char .'0' . $so_no;
+                }else{
+                    $sono = $zone_char .$so_no;
+                }
+            }
+        }else{
+            $so_no_count = SalesOrder::select('so_no')->where('so_no','LIKE',"{$zone}%")->orderBy('so_no','desc')->count();
+            
+                $so_no = SalesOrder::select('so_no')->where('so_no','LIKE',"{$zone}%")->orderBy('so_no','desc')->get()->toArray();
+
+                $so_nos = [];
+                if($so_no_count > 0){
+                    foreach ($so_no as $key => $value) {
+                          //dd(print_r($value));
+                        $no = substr($value['so_no'],0,2);
+                       // dd(print_r($no));
+                        if($no != 'NA'){
+                            $so_nos[] = $value;
+                        }
+                    }
+                   
+                    $so_no = head($so_nos);
+                   // $so_no = $so_nos[0];
+                  //  dd(print_r($so_no));
+                    $zone_char = ucfirst(substr($so_no['so_no'], 0,1));
+                    if($so_no == null){
+                        $zone_char = $zone;
+                    }else{
+                        $zone_char = ucfirst(substr($so_no['so_no'], 0,1));
+                    }
+                    $so_no = substr($so_no['so_no'], 1) + 1;
+                    $lenstr = strlen($so_no);
+                    if($lenstr == 1){
+                        $sono = $zone_char .'00' . $so_no;
+                    }elseif($lenstr == '2'){
+                        $sono = $zone_char .'0' . $so_no;
+                    }else{
+                        $sono = $zone_char .$so_no;
+                    }
+                }else{
+                    if($zone == 'N'){
+                        $sono = 'N1100';
+                    }elseif($zone == 'W'){
+                        $sono = 'W1600';
+                    }elseif($zone == 'S'){
+                        $sono = 'S2200';
+                    }elseif($zone == 'T'){
+                        $sono = 'T500';
+                    }else{
+                        $sono = $zone . '001';
+                    }
+                    
+
+                
+                }
+        }
+
+      //  $sono = json_decode($salesorder_data['so_no']);
+
+
+       // return print_r($salesorder_data['so_no']);
+
+        
+
+            
+        $id = null;
+        if(isset($salesorder_data['reorder'])){
+            $billing_id = $salesorder_data['billing_id'];
+        }else{
+            $billing_id = $salesorder_data['sales_order_data']['billing_title'];
+        }
+
+        $billing = AddressMaster::where('id',$billing_id)->first();
+       
+
+        $save_detail = SalesOrder::firstOrNew(['id' => $id]);
+        $save_detail->fill($salesorder_data['sales_order_data']);
+       // return print_r($sono);
+        $save_detail->so_no = $sono;
+        if(isset($salesorder_data['sales_order_data']['check_billing'])){
+            if($salesorder_data['sales_order_data']['check_billing'] == true){
+                $save_detail['billing_address'] = $billing['address'];
+                $save_detail['shipping_address'] = $billing['address'];
+                $save_detail['stateid'] = $billing['state_id'];
+                $save_detail['cityid'] = $billing['city_id'];
+                $save_detail['pin_code'] = $billing['pincode'];
+                $save_detail['countryid'] = $billing['country_id'];
+            }
+            if($salesorder_data['sales_order_data']['check_billing'] == true){
+                $save_detail['check_billing'] = "1";
+            }
+
+        }
+
+        
+        \Log::info($save_detail);
+
+        $save_detail['billing_id'] = $salesorder_data['sales_order_data']['billing_id'];
+        $save_detail['billing_title'] = $salesorder_data['sales_order_data']['billing_title'];
+        $save_detail['billing_address'] = $salesorder_data['sales_order_data']['billing_address'];
+        $save_detail['shipping_address'] = $salesorder_data['sales_order_data']['shipping_address'];
+        $save_detail['stateid'] = $salesorder_data['sales_order_data']['stateid'];
+        $save_detail['cityid'] = $salesorder_data['sales_order_data']['cityid'];
+        $save_detail['pin_code'] = $salesorder_data['sales_order_data']['pin_code'];
+        $save_detail['countryid'] = $salesorder_data['sales_order_data']['countryid'];
+        
+
+        // tax rate
+        $save_detail['taxrate'] = $taxrate; 
+
+       
+        // encode image files
+
+        $image_data = $save_detail['image'];        
+        unset($save_detail['image']);
+
+       
+
+        $user_id = $salesorder_data['sales_order_data']['user'];
+        if($user_id['team_id'] == config('Constant.superadmin')){
+            $save_detail['status'] = config('Constant.status.approve');
+        }else{
+            $save_detail['status'] = config('Constant.status.pending');
+        }
+
+
+      //   return print_r($save_detail);
+        $save_detail['created_by'] = $user_id['id'];
+
+
+
+        // return $save_detail;
+        // exit();
+        $save_detail->save();
+
+        $sales_order_item = $this->SalesOrderItem($salesorder_data['sales_order_items'],$save_detail['id']);
+       
+           // $save_sales_data->save();
+       
+       $save_detail->product_image = $image_data;
+    
+        
+        return ['product_item'=>$salesorder_data['sales_order_data'],'id'=>$save_detail->id];
+
+
+    }
+    public function SalesOrderItem($orderItems,$orderId){
+
+
+        $product_item = $orderItems;
+        // print_r($product_item);
+        // exit();
+        $id = $orderId;
+        foreach ($product_item as $key => $value) {
+            $sales_order_item = new SalesOrderItem();
+            $sales_order_item->qty = $value['qty'];
+            $sales_order_item->sales_order_id = $id;
+            $sales_order_item->product_id = $key;
+            $sales_order_item->model_no = $value['model_no'];
+            $sales_order_item->unit_value = $value['unit_value'];
+            $sales_order_item->total_value = $value['total_value'];
+            $sales_order_item->list_price = $value['list_price'];
+            $sales_order_item->manu_clearance = $value['manu_clearance'];
+            $sales_order_item->discount_applied = $value['discount_applied'];
+            $sales_order_item->tax_value = $value['tax_value'];
+            $sales_order_item->supplier_id = $value['supplier_id'];
+            $user_id = Auth::guard('admin')->user();
+            $sales_order_item['created_by'] = $user_id['id'];
+
+           // $max_discount = $value['max_discount'];
+           /*
+            $discount_applied = $value['discount_applied'];
+            $sales_order_item->is_mail = '0';
+        
+            if($discount_applied > 0){
+                if($max_discount < $discount_applied){
+                    $sales_order_item->is_mail = '1';
+                }
+            }
+
+            */
+            
+            $sales_order_item->save();
+
+        }
+        
+        return $product_item;
+
+
+
+
     }
 
     /**
@@ -282,7 +531,7 @@ class SOController extends Controller
               // return $sales_order_data;
 
               
-    
+          // dd($sales_order_data);
             return response()->json(['sales_order_data' => $sales_order_data,'sales_order_items'=> $sales_order_item_pdf]);
          //   return response()->json(['success' => $product_data], $this->successStatus);
 
