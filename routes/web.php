@@ -192,6 +192,12 @@ Route::group(array('middleware' => ['admin_guest']), function () {
 		//Supplier API Routes
 		Route::resource('api/suppliers','Api\SupplierController');
 
+		// Distributor API Routes.
+		Route::resource('api/distributors','Api\DistributorController');
+
+
+
+
 		
 	//	Route::get('admin/login', 'Admin\Auth\AdminLoginController@showLoginForm')->name('admin.login');
 

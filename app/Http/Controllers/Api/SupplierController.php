@@ -53,6 +53,40 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         //
+        $supplierupdate_data = $request->all();
+        // dd($supplierupdate_data);
+         //   $supplierupdate_data['id'] = $id;
+    
+            // return $id;
+            // exit();
+            $save_supplier_detail =  new SupplierMaster();
+            $save_supplier_detail->fill($supplierupdate_data['supplierupdate_data']);
+            // dd($save_supplier_detail);
+            $save_supplier_detail->company_id = $supplierupdate_data['supplierupdate_data']['company_id'];
+            if(!empty($save_supplier_detail['spoc_phone'])){
+                $save_supplier_detail->spoc_phone = $supplierupdate_data['supplierupdate_data']['spoc_phone'];
+            }
+            if(!empty($save_supplier_detail['spoc_email'])){
+                $save_supplier_detail->spoc_email = $supplierupdate_data['supplierupdate_data']['spoc_email'];
+            }
+            $save_supplier_detail->save();
+    
+          //  $supplier_delete = AddressMaster::where('supplier_id',$save_supplier_detail->id)->delete();
+            $supplier_details = $request->input('supplier_data_info');
+    
+            foreach($supplier_details as $key=>$single_supplier_details)
+            {
+                $save_details = new AddressMaster();
+              //  $save_details->supplier_id = $save_supplier_detail->id;
+                $save_details->title = $single_supplier_details['title'];
+                $save_details->address = $single_supplier_details['address'];
+                $save_details->country_id = $single_supplier_details['country_id'];
+                $save_details->state_id = $single_supplier_details['state_id'];
+                $save_details->city_id = $single_supplier_details['city_id'];
+                $save_details->pincode = $single_supplier_details['pincode'];
+                $save_details->save();
+            }
+            return response()->json(['supplier_data'=>$supplierupdate_data,'supplier_details'=>$save_details]);
     }
 
     /**
