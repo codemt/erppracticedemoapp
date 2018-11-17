@@ -144,7 +144,7 @@ $(function(){
             },
             {   mData:"company_id",sWidth:"25%",bSortable : true, bVisible : true,sClass : 'text-center',sWidth:"25%",
                  mRender : function(v,t,o){  
-                    var company_id = o['id'];
+                    var company_id = o.id.toString();
                     console.log(company_id);
                      console.log(o);
                     var company_name = '';
