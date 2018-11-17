@@ -34,7 +34,7 @@
                             <div class="form-group @if($errors->has('company_id')) has-error @endif">
                                 <div class="col-md-12">Select Company<sup class="text-danger">*</sup></div>
                                 <div class="col-md-12">
-                                    <?= Form::select('company_id[]',$company_list, old('company_id[]',$copany_id_array),array('class' => 'form-control select2 company','placeholder'=>'Select Company','multiple'=>true)) ?>
+                                    <?= Form::select('company_id[]',$company_list, old('company_id[]'),array('class' => 'form-control select2 company','placeholder'=>'Select Company','multiple'=>true)) ?>
                                     <span id="select_2_error" class="help-inline text-danger"><?=$errors->first('company_id')?></span>
                                 </div>
                             </div>
@@ -268,8 +268,8 @@
                 placeholder : "Select Company",
             });
             $('.company').prop('disabled',true);
-            @if(old('company_id',$copany_id_array))
-                var company_id = {!! json_encode(old('company_id',$copany_id_array)) !!};
+            @if(old('company_id'))
+                var company_id = {!! json_encode(old('company_id')) !!};
                 // console.log(combo_product);
                 if(typeof company_id == 'string'){
                     company_id = company_id.split(',');
