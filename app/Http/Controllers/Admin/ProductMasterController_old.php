@@ -11,7 +11,7 @@ use App\Events\AddProductMasterEvent;
 use App\Http\Requests\AddProductMasterRequest;
 use App\Models\ProductMaster;
 use App\Models\SupplierMaster;
-use Form;
+use Form,Response;
 
 class ProductMasterController extends Controller
 {
@@ -228,4 +228,37 @@ class ProductMasterController extends Controller
 
         })->export('csv');
     }
+
+    public function exportxml($id){
+        $all_products_data = ProductMaster::select('supplier_masters.supplier_name','company_masters.company_name','product_master.model_no','product_master.qty','product_master.price','product_master.name_description')->leftjoin('supplier_masters','supplier_masters.id','=','product_master.supplier_id')->leftjoin('company_masters','company_masters.id','=','product_master.company_id')->where('product_master.company_id',$id)->get()->toArray();
+
+        $company_name = CompanyMaster::select('company_name')->where('id',$id)->first();
+        $all_suppliers = SupplierMaster::select('supplier_name')->get()->toArray();
+        // dd($all_suppliers);
+        // dd($company_name);
+        // dd($all_products_data);
+        if(!empty($all_products_data)){
+            if($id == config('Constant.Triton')){
+                $status_xml_view = view('admin.product_master.productTritonXml',compact('all_products_data','company_name','all_suppliers'))->render();
+                $file_name = time()."ProductTriton_.xml";
+            }
+            if($id == config('Constant.Stellar')){
+                $status_xml_view = view('admin.product_master.productStellarXml',compact('all_products_data','company_name','all_suppliers'))->render();
+                $file_name = time()."ProductStellar_.xml";
+            }
+            $current_date_dir = date('d-m-y');
+            if(!is_dir(public_path()."/product_xml/".$current_date_dir)){
+                mkdir(public_path()."/product_xml/".$current_date_dir);
+            }
+            $path = public_path()."/product_xml/".$current_date_dir."/".$file_name;
+            fopen($path,"w");
+            file_put_contents($path,$status_xml_view);
+            $file = public_path()."/product_xml/".$current_date_dir."/".$file_name;
+            return Response::download($file, $file_name);
+        }
+        else{
+            return redirect()->route('product.index')->with('message', 'No Record with this company.')->with('message_type', 'error');
+        }
+    }
+    
 }

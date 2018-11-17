@@ -195,6 +195,9 @@ Route::group(array('middleware' => ['admin_guest']), function () {
 		// Distributor API Routes.
 		Route::resource('api/distributors','Api\DistributorController');
 
+		// Stock API Routes.
+		Route::resource('api/stock','Api\ManageStockController');
+
 
 
 
